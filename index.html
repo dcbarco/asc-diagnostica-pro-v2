@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASC Diagnóstica Pro</title>
+    <!-- Incluir Chart.js desde CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Estilos CSS (Ajustados ligeramente para iconos SVG) */
+        :root {
+            --color-primary: #4f46e5; /* Indigo-600 */
+            --color-secondary: #10b981; /* Emerald-500 */
+            --color-background: #f9fafb; /* Gray-50 */
+            --color-card-bg: #ffffff;
+            --color-text: #1f2937; /* Gray-800 */
+            --color-text-muted: #6b7280; /* Gray-500 */
+            --border-radius: 0.5rem;
+            --box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --icon-color: var(--color-primary);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1024px; margin: 0 auto; padding: 1rem 2rem; }
+        .hero { text-align: center; padding: 4rem 1rem; background-color: var(--color-primary); color: white; margin-bottom: 3rem; }
+        .hero h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem; }
+        .logo-svg { width: 40px; height: 40px; stroke: currentColor; stroke-width: 2; fill: none; } /* Ajustado para logo */
+        .hero p { font-size: 1.125rem; max-width: 600px; margin: 0 auto; opacity: 0.9; }
+
+        .grid { display: grid; gap: 1.5rem; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        @media (min-width: 768px) { .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (min-width: 1024px) { .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+        .card { background-color: var(--color-card-bg); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--box-shadow); transition: transform 0.2s ease-in-out; }
+        .card:hover { transform: translateY(-5px); }
+        .card h3 { margin-top: 0; color: var(--color-primary); font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem; /* Gap para icono */ }
+        .card h3 .vector-icon-svg { width: 24px; height: 24px; stroke: var(--icon-color); stroke-width: 1.5; fill:none; } /* Estilo icono card */
+        .card h3 span { background-color: var(--color-secondary); color: white; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 0.25rem; margin-left: 0.5rem; font-weight: 600; }
+        .card p { color: var(--color-text-muted); font-size: 0.9rem; }
+
+        /* --- Formulario y Reporte (Estilos anteriores mantenidos y ajustados) --- */
+        .form-section { background-color: var(--color-card-bg); padding: 2rem; border-radius: var(--border-radius); box-shadow: var(--box-shadow); margin-top: 3rem; }
+        .form-section h2 { text-align: center; margin-bottom: 2rem; font-size: 1.8rem; color: var(--color-primary); }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--color-text); }
+        .form-group input[type="text"], .form-group textarea { width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; box-sizing: border-box; font-family: inherit; }
+        .form-group textarea { min-height: 150px; resize: vertical; }
+        small { display: block; font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.25rem; }
+        .question-block { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e7eb; }
+        .question-block p { margin-bottom: 0.75rem; font-weight: 500; }
+        .radio-group { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; }
+        .radio-group label { display: flex; align-items: center; gap: 0.3rem; font-weight: 400; cursor: pointer; font-size: 0.9rem; }
+        .radio-group input[type="radio"] { cursor: pointer; accent-color: var(--color-primary); }
+        .btn { display: inline-block; background-color: var(--color-primary); color: white; padding: 0.8rem 1.8rem; border: none; border-radius: var(--border-radius); font-size: 1rem; font-weight: 600; text-align: center; cursor: pointer; transition: background-color 0.2s ease; margin-top: 1rem; width: 100%; }
+        @media (min-width: 640px) { .btn { width: auto; } }
+        .btn:hover:not(:disabled) { background-color: #4338ca; }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        #reportSection { display: none; margin-top: 3rem; padding: 2rem; background-color: var(--color-card-bg); border-radius: var(--border-radius); box-shadow: var(--box-shadow); }
+        #reportSection h2 { text-align: center; color: var(--color-primary); margin-bottom: 2.5rem; }
+        .report-layout { display: flex; flex-direction: column; gap: 2.5rem; }
+        .report-chart-area { order: 1; }
+        .report-feedback-area { order: 2; }
+        @media (min-width: 1024px) { .report-layout { flex-direction: row; } .report-chart-area { flex: 1 1 45%; max-width: 500px; margin: 0 auto; } .report-feedback-area { flex: 1 1 55%; } }
+        .chart-container { position: relative; margin: 0 auto; padding: 1rem; border: 1px solid #eee; border-radius: var(--border-radius); background-color: #f9fafb; }
+        #radarChart { max-width: 100%; height: auto; }
+        .feedback-section h3 { color: var(--color-secondary); border-bottom: 2px solid var(--color-secondary); padding-bottom: 0.5rem; margin-top: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .vector-icon-svg-report { width: 20px; height: 20px; stroke: var(--color-secondary); stroke-width: 1.5; fill:none; flex-shrink: 0; } /* Icono en reporte */
+        .feedback-section p, .feedback-section li, .feedback-section strong, .feedback-section h4 { font-size: 0.95rem; line-height: 1.7; color: var(--color-text-muted); margin-bottom: 1rem; }
+        .feedback-section strong { color: var(--color-text); font-weight: 600; }
+        .feedback-section h4 { color: var(--color-primary); margin-top: 1.5rem; font-size: 1.1rem; font-weight: 600; }
+        .feedback-section ul { list-style: disc; padding-left: 1.5rem; }
+        .loading-message, .error-message { text-align: center; padding: 1rem; margin-top: 1rem; border-radius: var(--border-radius); }
+        .loading-message { color: var(--color-primary); background-color: rgba(79, 70, 229, 0.1); }
+        .error-message { color: #dc2626; background-color: rgba(220, 38, 38, 0.1); }
+        footer { text-align: center; margin-top: 4rem; padding: 2rem 1rem; color: var(--color-text-muted); font-size: 0.875rem; border-top: 1px solid #e5e7eb; }
+        .text-center { text-align: center; }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <div class="container">
+             <h1>
+                 <!-- Logo SVG Placeholder -->
+                 <svg class="logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                 ASC Diagnóstica Pro
+             </h1>
+            <p>Evalúa y potencia la Apropiación Social del Conocimiento (ASC) en tus proyectos con diagnósticos y recomendaciones generadas por IA.</p>
+        </div>
+    </header>
+
+    <main class="container">
+         <section id="vectors">
+            <h2 class="text-center mb-4" style="font-size: 1.8rem; color: var(--color-primary);">Los 6 Vectores de la Apropiación Social</h2>
+             <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
+                 <!-- Vector Cards con iconos SVG -->
+                <div class="card">
+                    <h3>
+                        <svg class="vector-icon-svg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        Diálogo Social <span>DISO</span>
+                    </h3>
+                    <p>Apertura activa del proyecto a la interacción, participación y diálogo genuino con diversos actores sociales y sus saberes.</p>
+                </div>
+                 <div class="card">
+                    <h3>
+                        <svg class="vector-icon-svg" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg> <!-- Icono representativo de Saberes Integrados (Alternativa) -->
+                         Integración de Saberes <span>INSA</span>
+                    </h3>
+                    <p>Integración y diálogo equitativo entre diferentes tipos de conocimiento (científico, local, ancestral, etc.) y perspectivas disciplinares.</p>
+                </div>
+                 <div class="card">
+                    <h3>
+                        <svg class="vector-icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        Respuesta Oportuna <span>REPO</span>
+                    </h3>
+                    <p>Capacidad del proyecto para traducir conocimiento en acciones relevantes de manera oportuna y adaptarse a las necesidades sociales.</p>
+                </div>
+                 <div class="card">
+                    <h3>
+                        <svg class="vector-icon-svg" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg> <!-- Icono Llave Inglesa -->
+                        Aplicación Práctica <span>APRA</span>
+                    </h3>
+                    <p>Traducción del conocimiento en resultados tangibles, aplicaciones prácticas y beneficios demostrables para los actores sociales.</p>
+                </div>
+                 <div class="card">
+                    <h3>
+                        <svg class="vector-icon-svg" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg> <!-- Icono de grupo/colaboración -->
+                         Co-creación Participativa <span>COPA</span>
+                    </h3>
+                    <p>Colaboración profunda, co-creación y construcción de relaciones horizontales de confianza entre el proyecto y los actores sociales.</p>
+                </div>
+                 <div class="card">
+                    <h3>
+                        <svg class="vector-icon-svg" viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg> <!-- Icono Wifi/Conectividad -->
+                         Conectividad Accesible <span>COAC</span>
+                    </h3>
+                    <p>Uso estratégico de herramientas tecnológicas para facilitar y amplificar el acceso, intercambio, diálogo y participación.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="diagnosis-form" class="form-section">
+             <h2>Realiza tu Diagnóstico</h2>
+             <form id="ascForm">
+                 <div class="form-group">
+                     <label for="projectName">Nombre del Proyecto / Organización:</label>
+                     <input type="text" id="projectName" name="projectName" required>
+                 </div>
+                 <div class="form-group">
+                     <label for="projectDescription">Describe tu proyecto (Contexto, objetivos, público, etc.):</label>
+                     <textarea id="projectDescription" name="projectDescription" rows="6" placeholder="Proporciona detalles sobre tu proyecto para ayudar a la IA a generar recomendaciones más precisas (hasta 5000 caracteres)." maxlength="5000" required></textarea>
+                     <small>Esta descripción se usará para contextualizar el análisis de la IA.</small>
+                 </div>
+                 <div id="questionsContainer"></div>
+                 <div class="text-center mt-8">
+                     <button type="submit" id="submitButton" class="btn">Generar Diagnóstico con IA</button>
+                 </div>
+                  <div id="loadingIndicator" class="loading-message" style="display: none;">Generando reporte con IA... Esto puede tardar unos segundos.</div>
+                  <div id="errorIndicator" class="error-message" style="display: none;"></div>
+             </form>
+        </section>
+
+        <section id="reportSection">
+             <h2 id="reportTitle">Reporte de Diagnóstico ASC</h2>
+             <div class="report-layout">
+                 <div class="report-chart-area">
+                     <div class="chart-container">
+                         <canvas id="radarChart"></canvas>
+                     </div>
+                 </div>
+                 <div class="report-feedback-area">
+                      <div class="feedback-section" id="feedbackContainer">
+                         <p>Completa el formulario para generar tu diagnóstico y recomendaciones personalizadas.</p>
+                      </div>
+                 </div>
+             </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Desarrollado en el Makespace del Centro de Ciencia Francisco José de Caldas</p>
+    </footer>
+
+    <script>
+        const questions = [ /* ... Pega aquí las 36 preguntas de la versión anterior ... */
+            // DISO (Diálogo Social) - 6 preguntas
+            { vector: 'DISO', text: '1. ¿El proyecto interactúa y dialoga de forma sistemática y bidireccional con los actores sociales relevantes (comunidades, grupos de interés, etc.)?' }, { vector: 'DISO', text: '2. ¿El proyecto establece relaciones de colaboración (no solo informativas) con otros actores sociales, compartiendo conocimientos o recursos de manera activa?' }, { vector: 'DISO', text: '3. ¿El proyecto utiliza activamente la información, necesidades y perspectivas expresadas por los actores sociales para definir o reorientar sus objetivos y actividades?' }, { vector: 'DISO', text: '4. ¿El proyecto comparte la información relevante que genera (datos, hallazgos, avances) de forma transparente y en formatos accesibles para los actores sociales?' }, { vector: 'DISO', text: '5. ¿El proyecto facilita activamente que los conocimientos y resultados generados puedan ser comprendidos, utilizados y adaptados por los propios actores sociales?' }, { vector: 'DISO', text: '6. ¿El proyecto comunica de manera abierta y periódica sus avances, desafíos y aprendizajes a los actores sociales involucrados o interesados?' },
+            // INSA (Integración de Saberes) - 6 preguntas
+            { vector: 'INSA', text: '7. ¿El proyecto integra activamente conocimientos y perspectivas de diferentes disciplinas o áreas de experticia (científica, técnica) para abordar el problema de forma más completa?' }, { vector: 'INSA', text: '8. ¿Se promueve activamente la conformación de equipos de trabajo mixtos que incluyen tanto a miembros del proyecto (investigadores, técnicos) como a actores sociales con sus saberes locales/tradicionales/experienciales?' }, { vector: 'INSA', text: '9. ¿El proyecto busca activamente espacios y mecanismos para el diálogo y la colaboración respetuosa entre diferentes tipos de saberes (científico, técnico, local, ancestral, experiencial)?' }, { vector: 'INSA', text: '10. ¿Existen mecanismos claros y equitativos para que los actores sociales puedan aportar sus conocimientos, ideas y opiniones al desarrollo del proyecto, siendo estos valorados?' }, { vector: 'INSA', text: '11. ¿Las dinámicas del proyecto facilitan una interacción horizontal y respetuosa entre los diferentes tipos de conocimiento y actores, evitando jerarquías basadas únicamente en el saber académico/técnico?' }, { vector: 'INSA', text: '12. ¿Se crean grupos de trabajo específicos donde colaboren activamente personas con diferentes saberes (académicos, comunitarios, etc.) para abordar fases clave o desafíos del proyecto?' },
+            // REPO (Respuesta Oportuna) - 6 preguntas
+            { vector: 'REPO', text: '13. ¿El proyecto utiliza enfoques de gestión flexibles o adaptativos que le permiten ajustar sus acciones rápidamente según las necesidades sociales identificadas o cambios del contexto?' }, { vector: 'REPO', text: '14. ¿El proyecto implementa ciclos cortos de acción-aprendizaje-adaptación en conjunto con los actores sociales para asegurar la pertinencia y utilidad continua de sus intervenciones?' }, { vector: 'REPO', text: '15. ¿La comunicación entre el equipo del proyecto y los actores sociales es lo suficientemente fluida como para identificar y responder oportunamente a nuevas necesidades, desafíos o ideas emergentes?' }, { vector: 'REPO', text: '16. ¿El proyecto gestiona sus tiempos de forma que el conocimiento útil se comparte o aplica en momentos pertinentes para los actores sociales, sin demoras innecesarias que le resten valor?' }, { vector: 'REPO', text: '17. ¿El proyecto demuestra capacidad para adaptar sus planes y acciones rápidamente cuando surgen cambios importantes en el contexto social o en las necesidades expresadas por la comunidad?' }, { vector: 'REPO', text: '18. ¿Los procesos internos del proyecto (administrativos, de decisión) permiten tomar acciones de manera oportuna para facilitar la aplicación del conocimiento o la respuesta a demandas sociales urgentes?' },
+            // APRA (Aplicación Práctica) - 6 preguntas
+            { vector: 'APRA', text: '19. ¿El proyecto desarrolla habitualmente prototipos, pilotos, modelos o soluciones iniciales *junto con* los actores sociales para probar y refinar ideas en la práctica antes de su implementación final?' }, { vector: 'APRA', text: '20. ¿El proyecto experimenta y valida soluciones concretas (productos, servicios, métodos) a pequeña escala con los actores sociales antes de buscar su aplicación generalizada?' }, { vector: 'APRA', text: '21. ¿El proyecto tiene un enfoque claro en producir resultados tangibles (herramientas, métodos, servicios, contenidos prácticos, etc.) que sean directamente útiles y aplicables por los actores sociales en su contexto?' }, { vector: 'APRA', text: '22. ¿El proyecto utiliza modelos, demostraciones, ejemplos prácticos o visualizaciones como herramientas clave para facilitar la comprensión, el diálogo y la co-construcción de soluciones con los actores sociales?' }, { vector: 'APRA', text: '23. ¿El proyecto promueve una cultura donde la experimentación práctica y el aprendizaje a partir de los errores (durante la aplicación de soluciones) son vistos como parte valiosa del proceso de apropiación?' }, { vector: 'APRA', text: '24. ¿El proyecto asigna recursos específicos (tiempo, presupuesto, personal) para desarrollar, probar, refinar y acompañar las aplicaciones prácticas del conocimiento junto con la comunidad?' },
+            // COPA (Co-creación Participativa) - 6 preguntas
+            { vector: 'COPA', text: '25. ¿Se fomenta activamente la colaboración y el trabajo conjunto, basado en la confianza, entre el equipo del proyecto y los actores sociales a lo largo de las diferentes fases (diagnóstico, diseño, implementación, evaluación)?' }, { vector: 'COPA', text: '26. ¿El proyecto utiliza explícitamente procesos de co-diseño o co-creación donde los actores sociales participan activamente en la definición conjunta de problemas y en el desarrollo colaborativo de soluciones?' }, { vector: 'COPA', text: '27. ¿El proyecto contribuye activamente a generar un sentimiento de pertenencia, corresponsabilidad y comunidad entre todos los participantes (equipo y actores sociales) en torno a los objetivos y resultados compartidos?' }, { vector: 'COPA', text: '28. ¿El proyecto valora y aprovecha sistemáticamente la inteligencia colectiva (combinando conocimientos y experiencias diversas) para la toma de decisiones importantes y la resolución de problemas complejos?' }, { vector: 'COPA', text: '29. ¿La colaboración con los actores sociales es una práctica central, continua y significativa del proyecto, yendo más allá de consultas puntuales o validaciones superficiales?' }, { vector: 'COPA', text: '30. ¿Se reconoce y valora explícitamente (en informes, comunicaciones, etc.) el aporte colaborativo de los actores sociales en los resultados, aprendizajes y éxito general del proyecto?' },
+            // COAC (Conectividad Accesible) - 6 preguntas
+            { vector: 'COAC', text: '31. ¿El proyecto utiliza herramientas digitales (redes sociales, mensajería, plataformas web, etc.), adecuadas al contexto local, para facilitar la comunicación, el intercambio de información y la colaboración con y entre los actores sociales?' }, { vector: 'COAC', text: '32. ¿El proyecto emplea plataformas digitales (sitios web, repositorios, blogs, etc.) para compartir abiertamente conocimientos, recursos o resultados del proyecto de forma que sean fácilmente accesibles y comprensibles para los actores sociales?' }, { vector: 'COAC', text: '33. ¿Se utiliza la tecnología (digital o no digital, como radio comunitaria si aplica) específicamente para conectar el proyecto con actores sociales que, por distancia u otras barreras, tendrían difícil acceso o participación?' }, { vector: 'COAC', text: '34. ¿El proyecto explora o utiliza tecnologías (desde básicas como SMS hasta más avanzadas si es pertinente y accesible) para crear nuevas formas de interacción, aprendizaje o acceso al conocimiento adaptadas a las posibilidades de los actores sociales?' }, { vector: 'COAC', text: '35. ¿El proyecto considera activamente y busca soluciones para asegurar que los actores sociales tengan el acceso tecnológico o las capacidades básicas necesarias para utilizar las herramientas propuestas para la interacción o el acceso al conocimiento?' }, { vector: 'COAC', text: '36. ¿El proyecto utiliza formatos digitales diversos y adaptados (texto claro, audio, video, infografías, lenguajes sencillos) a las características y competencias digitales de los actores sociales para hacer el conocimiento más comprensible, útil y apropiable?' }
+        ];
+
+        // --- Variables y Lógica JS (Misma lógica que antes, con ajustes menores para API) ---
+        const questionsContainer = document.getElementById('questionsContainer');
+        const vectors = ['DISO', 'INSA', 'REPO', 'APRA', 'COPA', 'COAC'];
+        const vectorNames = { DISO: 'Diálogo Social', INSA: 'Integración de Saberes', REPO: 'Respuesta Oportuna', APRA: 'Aplicación Práctica', COPA: 'Co-creación Participativa', COAC: 'Conectividad Accesible' };
+        const vectorIconsSVG = { // SVG para iconos en el reporte
+             DISO: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>',
+             INSA: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>',
+             REPO: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
+             APRA: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>',
+             COPA: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>',
+             COAC: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>'
+        };
+
+        // Poblar Preguntas (Misma lógica que antes)
+         vectors.forEach(vector => { /* ... código para añadir preguntas al form ... */
+             const vectorTitle = document.createElement('h3');
+             vectorTitle.innerHTML = `<span class="vector-icon">${vectorIconsSVG[vector]}</span>${vectorNames[vector]} (${vector})`; // Usar icono SVG aquí también si se desea
+             vectorTitle.style.color = 'var(--color-secondary)';
+             vectorTitle.style.marginTop = '2rem';
+             vectorTitle.style.borderBottom = '1px solid #eee';
+             vectorTitle.style.paddingBottom = '0.5rem';
+             vectorTitle.style.display = 'flex'; // Alinear icono y texto
+             vectorTitle.style.alignItems = 'center';
+             vectorTitle.style.gap = '0.5rem';
+            questionsContainer.appendChild(vectorTitle);
+             // Resto del código para añadir radios (igual que antes)
+            questions.filter(q => q.vector === vector).forEach((q, index) => {
+                 const questionBlock = document.createElement('div');
+                 questionBlock.className = 'question-block';
+                 const questionIndex = questions.indexOf(q); // Índice global
+                 const questionText = document.createElement('p');
+                 questionText.textContent = q.text;
+                 questionBlock.appendChild(questionText);
+                 const radioGroup = document.createElement('div');
+                 radioGroup.className = 'radio-group';
+                 for (let i = 1; i <= 5; i++) {
+                     const label = document.createElement('label');
+                     const radio = document.createElement('input');
+                     radio.type = 'radio'; radio.name = `q${questionIndex}`; radio.value = i; radio.required = true;
+                     label.appendChild(radio);
+                     let labelText = '';
+                     switch(i) { case 1: labelText = '1 (Nada/Nunca)'; break; case 2: labelText = '2'; break; case 3: labelText = '3 (Regular)'; break; case 4: labelText = '4'; break; case 5: labelText = '5 (Totalmente/Siempre)'; break; }
+                     label.appendChild(document.createTextNode(labelText));
+                     radioGroup.appendChild(label);
+                 }
+                 questionBlock.appendChild(radioGroup);
+                 questionsContainer.appendChild(questionBlock);
+             });
+         });
+
+        const form = document.getElementById('ascForm');
+        const reportSection = document.getElementById('reportSection');
+        const feedbackContainer = document.getElementById('feedbackContainer');
+        const reportTitle = document.getElementById('reportTitle');
+        const projectNameInput = document.getElementById('projectName');
+        const projectDescriptionInput = document.getElementById('projectDescription');
+        const submitButton = document.getElementById('submitButton');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const errorIndicator = document.getElementById('errorIndicator');
+        const chartCanvas = document.getElementById('radarChart');
+        const ctx = chartCanvas.getContext('2d');
+        let radarChartInstance = null;
+
+        // Event Listener (igual que antes, llama a la API)
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            submitButton.disabled = true;
+            loadingIndicator.style.display = 'block';
+            errorIndicator.style.display = 'none';
+            reportSection.style.display = 'none';
+            feedbackContainer.innerHTML = '<p>Generando análisis...</p>';
+
+            const projectName = projectNameInput.value;
+            const projectDescription = projectDescriptionInput.value;
+            const scores = { DISO: [], INSA: [], REPO: [], APRA: [], COPA: [], COAC: [] };
+            const responses = {};
+            let allAnswered = true;
+
+            questions.forEach((q, index) => {
+                const selectedRadio = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selectedRadio) {
+                    const score = parseInt(selectedRadio.value);
+                    scores[q.vector].push(score);
+                    responses[`q${index}`] = score;
+                } else { allAnswered = false; }
+            });
+
+             if (!allAnswered) { showError("Por favor, responde todas las preguntas."); return; }
+
+            const averageScores = {};
+            vectors.forEach(vector => {
+                const sum = scores[vector].reduce((acc, val) => acc + val, 0);
+                averageScores[vector] = parseFloat((sum / scores[vector].length).toFixed(1));
+            });
+
+            const apiPayload = {
+                projectName: projectName, projectDescription: projectDescription, scores: averageScores,
+                // Podrías incluir 'responses' si el backend lo necesita para análisis más detallado
+                // responses: responses
+             };
+
+            try {
+                // *** ¡IMPORTANTE! CAMBIA ESTA URL POR LA DE TU BACKEND REAL ***
+                const apiUrl = 'http://localhost:3001/api/diagnose'; // Use absolute URL for local testing
+                // ***************************************************************
+
+                const response = await fetch(apiUrl, {
+                     method: 'POST',
+                     headers: { 'Content-Type': 'application/json' },
+                     body: JSON.stringify(apiPayload),
+                 });
+
+                 if (!response.ok) {
+                     let errorMsg = `Error del servidor: ${response.status}`;
+                     try { const errorData = await response.json(); errorMsg = errorData.error || errorMsg; } catch(e) {}
+                     throw new Error(errorMsg);
+                 }
+                 const result = await response.json();
+                 displayReport(projectName, averageScores, result.diagnosisText || "Análisis no disponible.");
+
+             } catch (error) {
+                console.error("Error al llamar a la API:", error);
+                showError(`Error al generar el diagnóstico: ${error.message}. Verifica la conexión con el servicio backend.`);
+            } finally {
+                loadingIndicator.style.display = 'none';
+                submitButton.disabled = false;
+            }
+        });
+
+        // Función DisplayReport (Adaptada para incluir iconos en títulos h3)
+         function displayReport(projectName, scoresData, feedbackText) {
+             reportSection.style.display = 'block';
+             reportTitle.textContent = `Reporte de Diagnóstico ASC para: ${projectName}`;
+
+             // Mostrar Feedback de la IA (puede necesitar parseo de Markdown si el backend lo envía)
+             feedbackContainer.innerHTML = ''; // Limpiar
+             const feedbackContent = document.createElement('div');
+
+             // --- Intento Básico de Parseo Markdown Simple (Títulos y Listas) ---
+             // Reemplazar ### Título por <h3> con icono
+             let processedFeedback = feedbackText.replace(/### (.*?)\n/g, (match, title) => {
+                 let vectorKey = null;
+                 // Intentar encontrar el vector por nombre o acrónimo en el título
+                 for(const key in vectorNames) {
+                     if (title.includes(vectorNames[key]) || title.includes(`(${key})`)) {
+                         vectorKey = key;
+                         break;
+                     }
+                 }
+                 const iconHtml = vectorKey ? vectorIconsSVG[vectorKey] : ''; // Añadir icono si se encontró
+                 return `<h3>${iconHtml}${title.trim()}</h3>`;
+             });
+             // Reemplazar #### Subtítulo por <h4>
+             processedFeedback = processedFeedback.replace(/#### (.*?)\n/g, '<h4>$1</h4>');
+              // Reemplazar **texto** por <strong>texto</strong>
+             processedFeedback = processedFeedback.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+             // Reemplazar * item (o - item) por <li>item</li> y envolver en <ul>
+             processedFeedback = processedFeedback.replace(/^\s*[-*]\s+(.*)/gm, '<li>$1</li>');
+             processedFeedback = processedFeedback.replace(/(\n?<li>.*?<\/li>\n?)+/g, '<ul>$&</ul>\n'); // Envolver grupos de <li> en <ul>
+             // Reemplazar saltos de línea por <br> excepto dentro de listas
+             processedFeedback = processedFeedback.replace(/(?<!<\/li>)\n/g, '<br>');
+
+             feedbackContent.innerHTML = processedFeedback;
+             feedbackContainer.appendChild(feedbackContent);
+             // --- Fin Parseo Básico ---
+
+             // Generar Gráfico Radar (Misma lógica que antes)
+             const chartData = { labels: vectors.map(v => `${vectorNames[v]}\n(${v})`), datasets: [{ label: `Diagnóstico ASC`, data: vectors.map(v => scoresData[v]), backgroundColor: 'rgba(79, 70, 229, 0.2)', borderColor: 'rgba(79, 70, 229, 1)', borderWidth: 2, pointBackgroundColor: 'rgba(79, 70, 229, 1)', pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: 'rgba(79, 70, 229, 1)' }] };
+             const chartOptions = { scales: { r: { angleLines: { display: true, color: 'rgba(0, 0, 0, 0.1)' }, suggestedMin: 0, suggestedMax: 5, grid: { color: 'rgba(0, 0, 0, 0.1)' }, pointLabels: { font: { size: 10 }, color: '#333', }, ticks: { stepSize: 1, backdropColor: 'rgba(255, 255, 255, 0.75)', color: '#555' } } }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(context) { return `${context.parsed.r.toFixed(1)} / 5`; } } } }, maintainAspectRatio: true, responsive: true };
+             if(radarChartInstance) { radarChartInstance.destroy(); }
+             radarChartInstance = new Chart(ctx, { type: 'radar', data: chartData, options: chartOptions });
+
+             reportSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+         }
+
+        // Función ShowError (igual que antes)
+         function showError(message) { errorIndicator.textContent = message; errorIndicator.style.display = 'block'; loadingIndicator.style.display = 'none'; submitButton.disabled = false; }
+
+    </script>
+
+</body>
+</html>
