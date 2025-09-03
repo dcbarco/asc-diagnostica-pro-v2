@@ -1,56 +1,61 @@
+// Serverless Function para Vercel - ASC Pentágono Diagnóstico
 require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const path = require('path'); // Import the path module
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const app = express();
-const port = process.env.PORT || 3001;
-
-// Set Content Security Policy to allow inline scripts and images
-app.use((req, res, next) => {
-  res.setHeader(
-    "Content-Security-Policy",
-    "default-src 'self' http://localhost:3001 https: https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:3001 https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' http://localhost:3001 https:; img-src 'self' data: http://localhost:3001 https:; font-src 'self' http://localhost:3001 https:; connect-src 'self' http://localhost:3001 https: https://cdn.jsdelivr.net;"
-  );
-  next();
-});
-
-// Middleware
-app.use(cors());
-app.use(express.json());
-// Serve static files from the current directory. This should serve index.html for the root route.
-app.use(express.static(__dirname));
+// Configuración CORS para Vercel
+function setCORSHeaders(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+}
 
 // Configuración de Gemini
 const apiKey = process.env.GEMINI_API_KEY;
 if (!apiKey) {
-    console.error("ERROR FATAL: La variable de entorno GEMINI_API_KEY no está definida.");
+  console.error("ERROR FATAL: La variable de entorno GEMINI_API_KEY no está definida.");
 }
+
 let model;
 if (apiKey) {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-lite" });
+  const genAI = new GoogleGenerativeAI(apiKey);
+  model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-lite" });
 }
 
-// Endpoint de Diagnóstico
-app.post('/api/diagnose', async (req, res) => {
-    console.log("Recibida petición a /api/diagnose (v2.0)");
+module.exports = async (req, res) => {
+  // Configurar CORS
+  setCORSHeaders(res);
 
-    if (!model) {
-         console.error("Intento de llamada sin inicializar Gemini (API Key faltante).");
-         return res.status(500).json({ error: "Error interno: Configuración de IA incompleta." });
-    }
+  // Manejar pre-flight OPTIONS request
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
 
-    const { projectName, projectDescription, scores } = req.body;
+  // Solo permitir POST requests
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Método no permitido. Usa POST.' });
+  }
 
-    if (!projectName || !projectDescription || !scores || Object.keys(scores).length !== 5) {
-        console.warn("Petición con datos incompletos:", req.body);
-        return res.status(400).json({ error: "Faltan datos necesarios para el diagnóstico." });
-    }
+  if (!model) {
+    console.error("Intento de llamada sin inicializar Gemini (API Key faltante).");
+    return res.status(500).json({ error: "Error interno: Configuración de IA incompleta." });
+  }
 
-    // --- Prompt Mejorado para Gemini (v3.0) ---
-    const systemPrompt = `Eres un sistema inteligente experto en la Política Pública de Apropiación Social del Conocimiento (ASC) del Ministerio de Ciencia, Tecnología e Innovación de Colombia. Tu misión es actuar como un asesor especializado para proyectos de ciencia, tecnología e innovación, generando diagnósticos detallados y recomendaciones prácticas basadas en los 5 Principios ASC, sus 19 Líneas Estratégicas y los Productos Esperados de la política pública.
+  const { projectName, projectDescription, scores } = req.body;
+
+  if (!projectName || !projectDescription || !scores || Object.keys(scores).length !== 5) {
+    console.warn("Petición con datos incompletos:", req.body);
+    return res.status(400).json({ error: "Faltan datos necesarios para el diagnóstico." });
+  }
+
+  // Configuración de seguridad CSP para Vercel
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self' http://localhost:3001 https: https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:3001 https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' http://localhost:3001 https:; img-src 'self' data: http://localhost:3001 https:; font-src 'self' http://localhost:3001 https:; connect-src 'self' http://localhost:3001 https: https://cdn.jsdelivr.net;"
+  );
+
+  // --- Prompt Mejorado para Gemini (v3.0) ---
+  const systemPrompt = `Eres un sistema inteligente experto en la Política Pública de Apropiación Social del Conocimiento (ASC) del Ministerio de Ciencia, Tecnología e Innovación de Colombia. Tu misión es actuar como un asesor especializado para proyectos de ciencia, tecnología e innovación, generando diagnósticos detallados y recomendaciones prácticas basadas en los 5 Principios ASC, sus 19 Líneas Estratégicas y los Productos Esperados de la política pública.
 
 CONOCIMIENTO ESPECIALIZADO REQUERIDO:
 - Los 5 Principios ASC: COPE (Contexto y Pertinencia), PART (Participación Activa), DIIN (Diálogo de Saberes), IMTR (Impacto y Transformación), ARCR (Reflexión Crítica)
@@ -59,8 +64,8 @@ CONOCIMIENTO ESPECIALIZADO REQUERIDO:
 
 Tu análisis debe ser detallado, específico y apoyado en datos concretos de la política pública ASC. Proporciona explicaciones profundas y recomendaciones prácticas que puedan implementarse efectivamente.`;
 
-    const userPrompt = `
-ANALIZA COMPRENSIVAMENTE el siguiente proyecto basándote exhaustivamente en la Política Pública de Apropiación Social del Conocimiento (ASC) del Ministerio de Ciencia, Tecnología e Innovación de Colombia.
+  const userPrompt = `
+ANÁLISIS COMPRENSIVAMENTE el siguiente proyecto basándote exhaustivamente en la Política Pública de Apropiación Social del Conocimiento (ASC) del Ministerio de Ciencia, Tecnología e Innovación de Colombia.
 
 === INFORMACIÓN DEL PROYECTO ===
 **Nombre del Proyecto:** ${projectName}
@@ -149,25 +154,20 @@ La respuesta debe seguir EXACTAMENTE esta estructura para garantizar compatibili
 [Repetir estructura para cada principio con el formato exacto]
 `;
 
-    try {
-        console.log("Enviando prompt v2.0 a Gemini...");
-        const result = await model.generateContent([systemPrompt, userPrompt].join("\n\n"));
-        const response = await result.response;
-        const diagnosisText = await response.text();
-        console.log("Respuesta recibida de Gemini:");
-        console.log("-------------- CONTENIDO COMPLETO --------------");
-        console.log(diagnosisText);
-        console.log("-------------- FIN CONTEUDO --------------");
+  try {
+    console.log("Enviando prompt v3.0 a Gemini en Vercel...");
+    const result = await model.generateContent([systemPrompt, userPrompt].join("\n\n"));
+    const response = await result.response;
+    const diagnosisText = await response.text();
+    console.log("Respuesta recibida de Gemini en Vercel:");
+    console.log("================ ANALYSIS RECEIVED ================");
+    console.log(diagnosisText.substring(0, 300) + "...");
+    console.log("===================================================");
 
-        res.json({ diagnosisText });
+    res.json({ diagnosisText });
 
-    } catch (error) {
-        console.error("Error al llamar a la API de Gemini:", error);
-        res.status(500).json({ error: "No se pudo generar el análisis de IA." });
-    }
-});
-
-// Iniciar Servidor
-app.listen(port, () => {
-    console.log(`Servidor backend v2.0 escuchando en http://localhost:${port}`);
-});
+  } catch (error) {
+    console.error("Error al llamar a la API de Gemini en Vercel:", error);
+    res.status(500).json({ error: "No se pudo generar el análisis de IA." });
+  }
+};

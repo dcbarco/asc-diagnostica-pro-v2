@@ -3,51 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASC Diagnóstica Pro</title>
+    <title>ASC Pentágono Diagnóstico</title>
     <!-- Incluir Chart.js desde CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Estilos CSS (Ajustados ligeramente para iconos SVG) */
         :root {
-            --color-primary: #4f46e5; /* Indigo-600 */
-            --color-secondary: #10b981; /* Emerald-500 */
-            --color-background: #f9fafb; /* Gray-50 */
+            --color-primary: #0C4A6E; /* Azul Oscuro (Sky-900) */
+            --color-secondary: #059669; /* Verde (Emerald-600) */
+            --color-background: #f8fafc; /* Gris muy claro (Slate-50) */
             --color-card-bg: #ffffff;
-            --color-text: #1f2937; /* Gray-800 */
-            --color-text-muted: #6b7280; /* Gray-500 */
+            --color-text: #1e293b; /* Gris oscuro (Slate-800) */
+            --color-text-muted: #64748b; /* Gris medio (Slate-500) */
             --border-radius: 0.5rem;
             --box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             --icon-color: var(--color-primary);
         }
-
-        body {
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            background-color: var(--color-background);
-            color: var(--color-text);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
-
+        body { font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; background-color: var(--color-background); color: var(--color-text); margin: 0; padding: 0; line-height: 1.6; }
         .container { max-width: 1024px; margin: 0 auto; padding: 1rem 2rem; }
         .hero { text-align: center; padding: 4rem 1rem; background-color: var(--color-primary); color: white; margin-bottom: 3rem; }
         .hero h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem; }
-        .logo-svg { width: 40px; height: 40px; stroke: currentColor; stroke-width: 2; fill: none; } /* Ajustado para logo */
-        .hero p { font-size: 1.125rem; max-width: 600px; margin: 0 auto; opacity: 0.9; }
-
+        .logo-svg { width: 40px; height: 40px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+        .logo-img { width: 40px; height: 40px; object-fit: contain; }
+        .footer-logo-img { width: 120px; height: 120px; object-fit: contain; margin-bottom: 0.5rem; }
+        .hero p { font-size: 1.125rem; max-width: 700px; margin: 0 auto; opacity: 0.9; }
         .grid { display: grid; gap: 1.5rem; }
         .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
         @media (min-width: 768px) { .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         @media (min-width: 1024px) { .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-
-        .card { background-color: var(--color-card-bg); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--box-shadow); transition: transform 0.2s ease-in-out; }
+        .card-container-5 { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+        .card { background-color: var(--color-card-bg); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--box-shadow); transition: transform 0.2s ease-in-out; display: flex; flex-direction: column; }
         .card:hover { transform: translateY(-5px); }
-        .card h3 { margin-top: 0; color: var(--color-primary); font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem; /* Gap para icono */ }
-        .card h3 .vector-icon-svg { width: 24px; height: 24px; stroke: var(--icon-color); stroke-width: 1.5; fill:none; } /* Estilo icono card */
-        .card h3 span { background-color: var(--color-secondary); color: white; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 0.25rem; margin-left: 0.5rem; font-weight: 600; }
-        .card p { color: var(--color-text-muted); font-size: 0.9rem; }
-
-        /* --- Formulario y Reporte (Estilos anteriores mantenidos y ajustados) --- */
+        .card h3 { margin-top: 0; color: var(--color-primary); font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+        .card-icon-svg { width: 24px; height: 24px; stroke: var(--icon-color); stroke-width: 1.5; fill:none; flex-shrink: 0; }
+        .card h3 span { background-color: var(--color-secondary); color: white; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 0.25rem; margin-left: auto; font-weight: 600; }
+        .card p { color: var(--color-text-muted); font-size: 0.9rem; flex-grow: 1; }
         .form-section { background-color: var(--color-card-bg); padding: 2rem; border-radius: var(--border-radius); box-shadow: var(--box-shadow); margin-top: 3rem; }
         .form-section h2 { text-align: center; margin-bottom: 2rem; font-size: 1.8rem; color: var(--color-primary); }
         .form-group { margin-bottom: 1.5rem; }
@@ -60,332 +49,605 @@
         .radio-group { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; }
         .radio-group label { display: flex; align-items: center; gap: 0.3rem; font-weight: 400; cursor: pointer; font-size: 0.9rem; }
         .radio-group input[type="radio"] { cursor: pointer; accent-color: var(--color-primary); }
-        .btn { display: inline-block; background-color: var(--color-primary); color: white; padding: 0.8rem 1.8rem; border: none; border-radius: var(--border-radius); font-size: 1rem; font-weight: 600; text-align: center; cursor: pointer; transition: background-color 0.2s ease; margin-top: 1rem; width: 100%; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; background-color: var(--color-primary); color: white; padding: 0.8rem 1.8rem; border: none; border-radius: var(--border-radius); font-size: 1rem; font-weight: 600; text-align: center; cursor: pointer; transition: background-color 0.2s ease; margin-top: 1rem; width: 100%; }
+        .btn-spinner { position: relative; gap: 0.5rem; align-items: center; }
+        .antialiased { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        .btn-spinner.loading { background-color: var(--color-secondary); }
+        .btn-download { background-color: var(--color-secondary); padding: 0.6rem 1.2rem; margin-left: auto; }
+        .btn-download:hover:not(:disabled) { background-color: #059669; }
+        .report-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
         @media (min-width: 640px) { .btn { width: auto; } }
-        .btn:hover:not(:disabled) { background-color: #4338ca; }
+        .btn:hover:not(:disabled) { background-color: #082f49; /* Sky-950 */ }
         .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
         #reportSection { display: none; margin-top: 3rem; padding: 2rem; background-color: var(--color-card-bg); border-radius: var(--border-radius); box-shadow: var(--box-shadow); }
         #reportSection h2 { text-align: center; color: var(--color-primary); margin-bottom: 2.5rem; }
         .report-layout { display: flex; flex-direction: column; gap: 2.5rem; }
         .report-chart-area { order: 1; }
         .report-feedback-area { order: 2; }
-        @media (min-width: 1024px) { .report-layout { flex-direction: row; } .report-chart-area { flex: 1 1 45%; max-width: 500px; margin: 0 auto; } .report-feedback-area { flex: 1 1 55%; } }
-        .chart-container { position: relative; margin: 0 auto; padding: 1rem; border: 1px solid #eee; border-radius: var(--border-radius); background-color: #f9fafb; }
+        @media (min-width: 1024px) { .report-layout { flex-direction: row; align-items: flex-start;} .report-chart-area { flex: 1 1 40%; max-width: 450px; margin: 0 auto; position: sticky; top: 2rem;} .report-feedback-area { flex: 1 1 60%; } }
+        .chart-container { position: relative; margin: 0 auto; padding: 1rem; border: 1px solid #eee; border-radius: var(--border-radius); background-color: #f8fafc; }
         #radarChart { max-width: 100%; height: auto; }
-        .feedback-section h3 { color: var(--color-secondary); border-bottom: 2px solid var(--color-secondary); padding-bottom: 0.5rem; margin-top: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-        .vector-icon-svg-report { width: 20px; height: 20px; stroke: var(--color-secondary); stroke-width: 1.5; fill:none; flex-shrink: 0; } /* Icono en reporte */
+        .feedback-section h3 { margin-top: 2rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; font-size: 1.8rem; font-weight: 800; }
+
+        /* Estilo especial para el Diagnóstico General */
+        .feedback-section h2.diagnostico-general {
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, #0C4A6E, #0369A1);
+            color: white;
+            border-radius: 12px;
+            font-size: 1.6rem;
+            font-weight: 800;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(12, 74, 110, 0.3);
+            position: relative;
+        }
+
+        .feedback-section p.diagnostico-general-note {
+            text-align: center;
+            font-style: italic;
+            color: var(--color-text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            padding: 0.5rem;
+            background-color: rgba(12, 74, 110, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid var(--color-primary);
+        }
+
+        /* Estilos específicos para cada principio */
+        .feedback-section .principle-title-cope { color: #059669 /* Verde emerald */; border-bottom: 4px solid #10b981; padding-bottom: 0.75rem; }
+        .feedback-section .principle-title-part { color: #7c3aed /* Violeta */; border-bottom: 4px solid #8b5cf6; padding-bottom: 0.75rem; }
+        .feedback-section .principle-title-diin { color: #dc2626 /* Rojo */; border-bottom: 4px solid #ef4444; padding-bottom: 0.75rem; }
+        .feedback-section .principle-title-imtr { color: #ea580c /* Naranja */; border-bottom: 4px solid #f97316; padding-bottom: 0.75rem; }
+        .feedback-section .principle-title-arcr { color: #0891b2 /* Cyan */; border-bottom: 4px solid #06b6d4; padding-bottom: 0.75rem; }
+
+        .feedback-section .principle-title-cope .principle-icon { width: 48px; height: 48px; stroke: #059669; fill: none; stroke-width: 2; }
+        .feedback-section .principle-title-part .principle-icon { width: 48px; height: 48px; stroke: #7c3aed; fill: none; stroke-width: 2; }
+        .feedback-section .principle-title-diin .principle-icon { width: 48px; height: 48px; stroke: #dc2626; fill: none; stroke-width: 2; }
+        .feedback-section .principle-title-imtr .principle-icon { width: 48px; height: 48px; stroke: #ea580c; fill: none; stroke-width: 2; }
+        .feedback-section .principle-title-arcr .principle-icon { width: 48px; height: 48px; stroke: #0891b2; fill: none; stroke-width: 2; }
+
+        .feedback-section .score-badge { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; padding: 0.5rem 1rem; border-radius: 2rem; font-size: 1.1rem; font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-left: auto; }
+        .vector-icon-svg-report { width: 20px; height: 20px; stroke: var(--color-secondary); stroke-width: 1.5; fill:none; flex-shrink: 0; }
         .feedback-section p, .feedback-section li, .feedback-section strong, .feedback-section h4 { font-size: 0.95rem; line-height: 1.7; color: var(--color-text-muted); margin-bottom: 1rem; }
         .feedback-section strong { color: var(--color-text); font-weight: 600; }
-        .feedback-section h4 { color: var(--color-primary); margin-top: 1.5rem; font-size: 1.1rem; font-weight: 600; }
+        .feedback-section h4 { color: #e11d48; /* Un color distinctivo rosa-rojo para H4 */ margin-top: 1.5rem; font-size: 1.3rem; font-weight: 700; }
         .feedback-section ul { list-style: disc; padding-left: 1.5rem; }
         .loading-message, .error-message { text-align: center; padding: 1rem; margin-top: 1rem; border-radius: var(--border-radius); }
-        .loading-message { color: var(--color-primary); background-color: rgba(79, 70, 229, 0.1); }
-        .error-message { color: #dc2626; background-color: rgba(220, 38, 38, 0.1); }
+        .loading-message { color: var(--color-primary); background-color: rgba(12, 74, 110, 0.1); }
+        .error-message { color: #b91c1c; /* Red-700 */ background-color: rgba(185, 28, 28, 0.1); }
         footer { text-align: center; margin-top: 4rem; padding: 2rem 1rem; color: var(--color-text-muted); font-size: 0.875rem; border-top: 1px solid #e5e7eb; }
         .text-center { text-align: center; }
+
+        /* Spinner de carga */
+        .spinner { width: 1rem; height: 1rem; border: 2px solid rgba(12, 74, 110, 0.3); border-top: 2px solid var(--color-primary); border-radius: 50%; animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .btn-spinner { position: relative; }
+        .btn-spinner:disabled { background-color: var(--color-primary); }
+        .btn-spinner.disabled { opacity: 0.6; cursor: not-allowed; }
     </style>
 </head>
 <body>
-
     <header class="hero">
         <div class="container">
              <h1>
-                 <!-- Logo SVG Placeholder -->
-                 <svg class="logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-                 ASC Diagnóstica Pro
+             <svg class="logo-svg" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+             ASC Pentágono Diagnóstico
              </h1>
-            <p>Evalúa y potencia la Apropiación Social del Conocimiento (ASC) en tus proyectos con diagnósticos y recomendaciones generadas por IA.</p>
+            <p>Una herramienta alineada con la Política Pública de Minciencias para diagnosticar y fortalecer la Apropiación Social del Conocimiento en tus proyectos.</p>
         </div>
     </header>
-
     <main class="container">
-         <section id="vectors">
-            <h2 class="text-center mb-4" style="font-size: 1.8rem; color: var(--color-primary);">Los 6 Vectores de la Apropiación Social</h2>
-             <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
-                 <!-- Vector Cards con iconos SVG -->
+        <section id="vectors">
+            <h2 class="text-center mb-4" style="font-size: 1.8rem; color: var(--color-primary);">Los 5 Principios de la Apropiación Social</h2>
+             <div class="card-container-5">
                 <div class="card">
-                    <h3>
-                        <svg class="vector-icon-svg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                        Diálogo Social <span>DISO</span>
-                    </h3>
-                    <p>Apertura activa del proyecto a la interacción, participación y diálogo genuino con diversos actores sociales y sus saberes.</p>
+                    <h3><svg class="card-icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 6.9 8 11.7z"/></svg>Contexto y Pertinencia <span>COPE</span></h3>
+                    <p>Capacidad del proyecto para adaptarse a las realidades locales, necesidades y características culturales del territorio.</p>
                 </div>
                  <div class="card">
-                    <h3>
-                        <svg class="vector-icon-svg" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg> <!-- Icono representativo de Saberes Integrados (Alternativa) -->
-                         Integración de Saberes <span>INSA</span>
-                    </h3>
-                    <p>Integración y diálogo equitativo entre diferentes tipos de conocimiento (científico, local, ancestral, etc.) y perspectivas disciplinares.</p>
+                    <h3><svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Participación Activa <span>PART</span></h3>
+                    <p>Nivel y calidad de la intervención ciudadana en la toma de decisiones, colaboración y gobernanza del proyecto.</p>
                 </div>
                  <div class="card">
-                    <h3>
-                        <svg class="vector-icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                        Respuesta Oportuna <span>REPO</span>
-                    </h3>
-                    <p>Capacidad del proyecto para traducir conocimiento en acciones relevantes de manera oportuna y adaptarse a las necesidades sociales.</p>
+                    <h3><svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7"/><path d="M17 12H7"/></svg>Diálogo de Saberes <span>DIIN</span></h3>
+                    <p>Creación de espacios equitativos para intercambiar y construir conocimiento entre saberes científicos, locales y tradicionales.</p>
                 </div>
                  <div class="card">
-                    <h3>
-                        <svg class="vector-icon-svg" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg> <!-- Icono Llave Inglesa -->
-                        Aplicación Práctica <span>APRA</span>
-                    </h3>
-                    <p>Traducción del conocimiento en resultados tangibles, aplicaciones prácticas y beneficios demostrables para los actores sociales.</p>
+                    <h3><svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/><path d="m13 13-1-4-4 1 1 4 4-1z"/></svg>Impacto y Transformación<span>IMTR</span></h3>
+                    <p>Capacidad para generar cambios y resultados concretos como producto de la participación y el diálogo colaborativo.</p>
                 </div>
                  <div class="card">
-                    <h3>
-                        <svg class="vector-icon-svg" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg> <!-- Icono de grupo/colaboración -->
-                         Co-creación Participativa <span>COPA</span>
-                    </h3>
-                    <p>Colaboración profunda, co-creación y construcción de relaciones horizontales de confianza entre el proyecto y los actores sociales.</p>
-                </div>
-                 <div class="card">
-                    <h3>
-                        <svg class="vector-icon-svg" viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg> <!-- Icono Wifi/Conectividad -->
-                         Conectividad Accesible <span>COAC</span>
-                    </h3>
-                    <p>Uso estratégico de herramientas tecnológicas para facilitar y amplificar el acceso, intercambio, diálogo y participación.</p>
+                    <h3><svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Reflexión Crítica<span>ARCR</span></h3>
+                    <p>Procesos de análisis continuo, evaluación y sistematización de experiencias para el aprendizaje y la mejora constante.</p>
                 </div>
             </div>
         </section>
-
         <section id="diagnosis-form" class="form-section">
              <h2>Realiza tu Diagnóstico</h2>
              <form id="ascForm">
-                 <div class="form-group">
-                     <label for="projectName">Nombre del Proyecto / Organización:</label>
-                     <input type="text" id="projectName" name="projectName" required>
-                 </div>
-                 <div class="form-group">
-                     <label for="projectDescription">Describe tu proyecto (Contexto, objetivos, público, etc.):</label>
-                     <textarea id="projectDescription" name="projectDescription" rows="6" placeholder="Proporciona detalles sobre tu proyecto para ayudar a la IA a generar recomendaciones más precisas (hasta 5000 caracteres)." maxlength="5000" required></textarea>
-                     <small>Esta descripción se usará para contextualizar el análisis de la IA.</small>
-                 </div>
+                 <div class="form-group"><label for="projectName">Nombre del Proyecto / Organización:</label><input type="text" id="projectName" name="projectName" required></div>
+                 <div class="form-group"><label for="projectDescription">Describe tu proyecto (Contexto, objetivos, público, etc.):</label><textarea id="projectDescription" name="projectDescription" rows="6" placeholder="Proporciona detalles sobre tu proyecto para ayudar a la IA a generar recomendaciones más precisas (hasta 5000 caracteres)." maxlength="5000" required></textarea><small>Esta descripción se usará para contextualizar el análisis de la IA.</small></div>
                  <div id="questionsContainer"></div>
-                 <div class="text-center mt-8">
-                     <button type="submit" id="submitButton" class="btn">Generar Diagnóstico con IA</button>
-                 </div>
+                 <div class="text-center mt-8"><button type="submit" id="submitButton" class="btn btn-spinner"><span class="antialiased">Generar Diagnóstico con IA</span><div class="spinner" id="submitSpinner" style="display: none;"></div></button></div>
                   <div id="loadingIndicator" class="loading-message" style="display: none;">Generando reporte con IA... Esto puede tardar unos segundos.</div>
                   <div id="errorIndicator" class="error-message" style="display: none;"></div>
              </form>
         </section>
-
         <section id="reportSection">
-             <h2 id="reportTitle">Reporte de Diagnóstico ASC</h2>
+              <div class="report-header">
+                  <h2 id="reportTitle">Reporte de Diagnóstico ASC</h2>
+                  <button id="downloadReportBtn" class="btn btn-download">Descargar</button>
+              </div>
              <div class="report-layout">
-                 <div class="report-chart-area">
-                     <div class="chart-container">
-                         <canvas id="radarChart"></canvas>
-                     </div>
-                 </div>
-                 <div class="report-feedback-area">
-                      <div class="feedback-section" id="feedbackContainer">
-                         <p>Completa el formulario para generar tu diagnóstico y recomendaciones personalizadas.</p>
-                      </div>
-                 </div>
+                 <div class="report-chart-area"><div class="chart-container"><canvas id="radarChart"></canvas></div></div>
+                 <div class="report-feedback-area"><div class="feedback-section" id="feedbackContainer"><p>Completa el formulario para generar tu diagnóstico y recomendaciones personalizadas.</p></div></div>
              </div>
         </section>
     </main>
-
     <footer>
-        <p>Desarrollado en el Makespace del Centro de Ciencia Francisco José de Caldas</p>
+        <div class="container">
+            <img src="https://ia601206.us.archive.org/32/items/ccfjc-logo-color/CCFJC%20Logo%20Color%20.png" alt="CCFJC Logo" class="footer-logo-img">
+            <p>Desarrollado en el Makerspace del Centro de Ciencia Francisco José de Caldas</p>
+        </div>
     </footer>
-
     <script>
-        const questions = [ /* ... Pega aquí las 36 preguntas de la versión anterior ... */
-            // DISO (Diálogo Social) - 6 preguntas
-            { vector: 'DISO', text: '1. ¿El proyecto interactúa y dialoga de forma sistemática y bidireccional con los actores sociales relevantes (comunidades, grupos de interés, etc.)?' }, { vector: 'DISO', text: '2. ¿El proyecto establece relaciones de colaboración (no solo informativas) con otros actores sociales, compartiendo conocimientos o recursos de manera activa?' }, { vector: 'DISO', text: '3. ¿El proyecto utiliza activamente la información, necesidades y perspectivas expresadas por los actores sociales para definir o reorientar sus objetivos y actividades?' }, { vector: 'DISO', text: '4. ¿El proyecto comparte la información relevante que genera (datos, hallazgos, avances) de forma transparente y en formatos accesibles para los actores sociales?' }, { vector: 'DISO', text: '5. ¿El proyecto facilita activamente que los conocimientos y resultados generados puedan ser comprendidos, utilizados y adaptados por los propios actores sociales?' }, { vector: 'DISO', text: '6. ¿El proyecto comunica de manera abierta y periódica sus avances, desafíos y aprendizajes a los actores sociales involucrados o interesados?' },
-            // INSA (Integración de Saberes) - 6 preguntas
-            { vector: 'INSA', text: '7. ¿El proyecto integra activamente conocimientos y perspectivas de diferentes disciplinas o áreas de experticia (científica, técnica) para abordar el problema de forma más completa?' }, { vector: 'INSA', text: '8. ¿Se promueve activamente la conformación de equipos de trabajo mixtos que incluyen tanto a miembros del proyecto (investigadores, técnicos) como a actores sociales con sus saberes locales/tradicionales/experienciales?' }, { vector: 'INSA', text: '9. ¿El proyecto busca activamente espacios y mecanismos para el diálogo y la colaboración respetuosa entre diferentes tipos de saberes (científico, técnico, local, ancestral, experiencial)?' }, { vector: 'INSA', text: '10. ¿Existen mecanismos claros y equitativos para que los actores sociales puedan aportar sus conocimientos, ideas y opiniones al desarrollo del proyecto, siendo estos valorados?' }, { vector: 'INSA', text: '11. ¿Las dinámicas del proyecto facilitan una interacción horizontal y respetuosa entre los diferentes tipos de conocimiento y actores, evitando jerarquías basadas únicamente en el saber académico/técnico?' }, { vector: 'INSA', text: '12. ¿Se crean grupos de trabajo específicos donde colaboren activamente personas con diferentes saberes (académicos, comunitarios, etc.) para abordar fases clave o desafíos del proyecto?' },
-            // REPO (Respuesta Oportuna) - 6 preguntas
-            { vector: 'REPO', text: '13. ¿El proyecto utiliza enfoques de gestión flexibles o adaptativos que le permiten ajustar sus acciones rápidamente según las necesidades sociales identificadas o cambios del contexto?' }, { vector: 'REPO', text: '14. ¿El proyecto implementa ciclos cortos de acción-aprendizaje-adaptación en conjunto con los actores sociales para asegurar la pertinencia y utilidad continua de sus intervenciones?' }, { vector: 'REPO', text: '15. ¿La comunicación entre el equipo del proyecto y los actores sociales es lo suficientemente fluida como para identificar y responder oportunamente a nuevas necesidades, desafíos o ideas emergentes?' }, { vector: 'REPO', text: '16. ¿El proyecto gestiona sus tiempos de forma que el conocimiento útil se comparte o aplica en momentos pertinentes para los actores sociales, sin demoras innecesarias que le resten valor?' }, { vector: 'REPO', text: '17. ¿El proyecto demuestra capacidad para adaptar sus planes y acciones rápidamente cuando surgen cambios importantes en el contexto social o en las necesidades expresadas por la comunidad?' }, { vector: 'REPO', text: '18. ¿Los procesos internos del proyecto (administrativos, de decisión) permiten tomar acciones de manera oportuna para facilitar la aplicación del conocimiento o la respuesta a demandas sociales urgentes?' },
-            // APRA (Aplicación Práctica) - 6 preguntas
-            { vector: 'APRA', text: '19. ¿El proyecto desarrolla habitualmente prototipos, pilotos, modelos o soluciones iniciales *junto con* los actores sociales para probar y refinar ideas en la práctica antes de su implementación final?' }, { vector: 'APRA', text: '20. ¿El proyecto experimenta y valida soluciones concretas (productos, servicios, métodos) a pequeña escala con los actores sociales antes de buscar su aplicación generalizada?' }, { vector: 'APRA', text: '21. ¿El proyecto tiene un enfoque claro en producir resultados tangibles (herramientas, métodos, servicios, contenidos prácticos, etc.) que sean directamente útiles y aplicables por los actores sociales en su contexto?' }, { vector: 'APRA', text: '22. ¿El proyecto utiliza modelos, demostraciones, ejemplos prácticos o visualizaciones como herramientas clave para facilitar la comprensión, el diálogo y la co-construcción de soluciones con los actores sociales?' }, { vector: 'APRA', text: '23. ¿El proyecto promueve una cultura donde la experimentación práctica y el aprendizaje a partir de los errores (durante la aplicación de soluciones) son vistos como parte valiosa del proceso de apropiación?' }, { vector: 'APRA', text: '24. ¿El proyecto asigna recursos específicos (tiempo, presupuesto, personal) para desarrollar, probar, refinar y acompañar las aplicaciones prácticas del conocimiento junto con la comunidad?' },
-            // COPA (Co-creación Participativa) - 6 preguntas
-            { vector: 'COPA', text: '25. ¿Se fomenta activamente la colaboración y el trabajo conjunto, basado en la confianza, entre el equipo del proyecto y los actores sociales a lo largo de las diferentes fases (diagnóstico, diseño, implementación, evaluación)?' }, { vector: 'COPA', text: '26. ¿El proyecto utiliza explícitamente procesos de co-diseño o co-creación donde los actores sociales participan activamente en la definición conjunta de problemas y en el desarrollo colaborativo de soluciones?' }, { vector: 'COPA', text: '27. ¿El proyecto contribuye activamente a generar un sentimiento de pertenencia, corresponsabilidad y comunidad entre todos los participantes (equipo y actores sociales) en torno a los objetivos y resultados compartidos?' }, { vector: 'COPA', text: '28. ¿El proyecto valora y aprovecha sistemáticamente la inteligencia colectiva (combinando conocimientos y experiencias diversas) para la toma de decisiones importantes y la resolución de problemas complejos?' }, { vector: 'COPA', text: '29. ¿La colaboración con los actores sociales es una práctica central, continua y significativa del proyecto, yendo más allá de consultas puntuales o validaciones superficiales?' }, { vector: 'COPA', text: '30. ¿Se reconoce y valora explícitamente (en informes, comunicaciones, etc.) el aporte colaborativo de los actores sociales en los resultados, aprendizajes y éxito general del proyecto?' },
-            // COAC (Conectividad Accesible) - 6 preguntas
-            { vector: 'COAC', text: '31. ¿El proyecto utiliza herramientas digitales (redes sociales, mensajería, plataformas web, etc.), adecuadas al contexto local, para facilitar la comunicación, el intercambio de información y la colaboración con y entre los actores sociales?' }, { vector: 'COAC', text: '32. ¿El proyecto emplea plataformas digitales (sitios web, repositorios, blogs, etc.) para compartir abiertamente conocimientos, recursos o resultados del proyecto de forma que sean fácilmente accesibles y comprensibles para los actores sociales?' }, { vector: 'COAC', text: '33. ¿Se utiliza la tecnología (digital o no digital, como radio comunitaria si aplica) específicamente para conectar el proyecto con actores sociales que, por distancia u otras barreras, tendrían difícil acceso o participación?' }, { vector: 'COAC', text: '34. ¿El proyecto explora o utiliza tecnologías (desde básicas como SMS hasta más avanzadas si es pertinente y accesible) para crear nuevas formas de interacción, aprendizaje o acceso al conocimiento adaptadas a las posibilidades de los actores sociales?' }, { vector: 'COAC', text: '35. ¿El proyecto considera activamente y busca soluciones para asegurar que los actores sociales tengan el acceso tecnológico o las capacidades básicas necesarias para utilizar las herramientas propuestas para la interacción o el acceso al conocimiento?' }, { vector: 'COAC', text: '36. ¿El proyecto utiliza formatos digitales diversos y adaptados (texto claro, audio, video, infografías, lenguajes sencillos) a las características y competencias digitales de los actores sociales para hacer el conocimiento más comprensible, útil y apropiable?' }
+        const questions = [
+            { vector: 'COPE', text: '1. ¿El proyecto partió de un diagnóstico participativo para identificar y comprender las realidades, intereses y problemas del contexto local donde se desarrolla?' }, { vector: 'COPE', text: '2. ¿Las soluciones o alternativas que propone el proyecto son pertinentes, oportunas y respetuosas con las características culturales, sociales y ambientales del territorio?' }, { vector: 'COPE', text: '3. ¿El proyecto cuenta con mecanismos para adaptarse a cambios en el contexto o a nuevas necesidades identificadas por los participantes durante su ejecución?' }, { vector: 'COPE', text: '4. ¿El proyecto considera y se articula con los planes de desarrollo y políticas públicas locales, regionales o nacionales relevantes para su área de acción?' }, { vector: 'COPE', text: '5. ¿Se han identificado y mapeado los diferentes actores sociales del territorio para comprender sus roles, relaciones e intereses en torno al proyecto?' },
+            { vector: 'PART', text: '6. ¿El proyecto fomenta la participación activa de la ciudadanía en la toma de decisiones clave (ej. definición de objetivos, metodologías, asignación de recursos)?' }, { vector: 'PART', text: '7. ¿Se implementan convocatorias abiertas o estrategias de comunicación inclusivas para invitar a diversos actores sociales a vincularse al proyecto?' }, { vector: 'PART', text: '8. ¿El proyecto promueve la creación y fortalecimiento de espacios (mesas de trabajo, comités, talleres) donde la comunidad puede participar activamente en el diseño y gestión de las iniciativas?' }, { vector: 'PART', text: '9. ¿Existen roles definidos y se promueve el liderazgo de los miembros de la comunidad dentro de la estructura y gobernanza del proyecto?' }, { vector: 'PART', text: '10. ¿Se generan alianzas con otras organizaciones (instituciones educativas, gobiernos locales, sector privado) para fortalecer los procesos de participación ciudadana?' },
+            { vector: 'DIIN', text: '11. ¿El proyecto diseña y facilita activamente espacios para el encuentro y el diálogo respetuoso entre el conocimiento científico-tecnológico y los saberes tradicionales, locales o ancestrales?' }, { vector: 'DIIN', text: '12. ¿Los resultados y productos del proyecto (informes, materiales, etc.) integran y reflejan la diversidad de saberes y perspectivas de los participantes?' }, { vector: 'DIIN', text: '13. ¿El proyecto utiliza metodologías participativas (ej. cartografía social, talleres de co-creación) que facilitan el intercambio y la construcción conjunta de conocimiento?' }, { vector: 'DIIN', text: '14. ¿Se fomenta el diálogo entre investigadores y la ciudadanía para la generación y uso del conocimiento, en línea con principios de ciencia ciudadana o ciencia abierta?' }, { vector: 'DIIN', text: '15. ¿Se promueve el intercambio de experiencias y aprendizajes con otros proyectos o comunidades para enriquecer el conocimiento colectivo?' },
+            { vector: 'IMTR', text: '16. ¿El proyecto genera resultados tangibles (productos, servicios, metodologías, políticas) que contribuyen a la transformación de las realidades o problemas identificados inicialmente?' }, { vector: 'IMTR', text: '17. ¿El proyecto fortalece las capacidades de los actores sociales para que puedan gestionar, producir o aplicar conocimiento de forma autónoma en el futuro?' }, { vector: 'IMTR', text: '18. ¿Los procesos de co-creación del proyecto han resultado en la construcción de relaciones más horizontales y de confianza entre los diversos actores involucrados?' }, { vector: 'IMTR', text: '19. ¿El proyecto cuenta con indicadores para medir el impacto de sus procesos y resultados en el bienestar de la comunidad o en la solución de la problemática abordada?' }, { vector: 'IMTR', text: '20. ¿Los resultados del proyecto son sistematizados y comunicados de forma que puedan ser replicados, escalados o apropiados por otros actores o en otros contextos?' },
+            { vector: 'ARCR', text: '21. ¿El proyecto implementa procesos continuos de seguimiento y monitoreo para analizar sus avances y desafíos, involucrando la perspectiva de los participantes?' }, { vector: 'ARCR', text: '22. ¿Se realizan ejercicios de sistematización de experiencias para documentar los aprendizajes, tanto los éxitos como las dificultades del proceso?' }, { vector: 'ARCR', text: '23. ¿El proyecto fomenta espacios de reflexión crítica entre los participantes para analizar sus prácticas, las condiciones de su contexto y las transformaciones logradas?' }, { vector: 'ARCR', text: '24. ¿Se realiza una evaluación de resultados (ex-post) que permite evidenciar los avances en el cumplimiento de los objetivos y las necesidades de ajuste?' }, { vector: 'ARCR', text: '25. ¿Los aprendizajes generados a partir de la evaluación y la reflexión crítica se utilizan para mejorar el diseño de futuras fases o nuevos proyectos?' }
         ];
-
-        // --- Variables y Lógica JS (Misma lógica que antes, con ajustes menores para API) ---
         const questionsContainer = document.getElementById('questionsContainer');
-        const vectors = ['DISO', 'INSA', 'REPO', 'APRA', 'COPA', 'COAC'];
-        const vectorNames = { DISO: 'Diálogo Social', INSA: 'Integración de Saberes', REPO: 'Respuesta Oportuna', APRA: 'Aplicación Práctica', COPA: 'Co-creación Participativa', COAC: 'Conectividad Accesible' };
-        const vectorIconsSVG = { // SVG para iconos en el reporte
-             DISO: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>',
-             INSA: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>',
-             REPO: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
-             APRA: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>',
-             COPA: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>',
-             COAC: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>'
+        const vectors = ['COPE', 'PART', 'DIIN', 'IMTR', 'ARCR'];
+        const vectorNames = { COPE: 'Contexto y Pertinencia', PART: 'Participación Activa', DIIN: 'Diálogo de Saberes', IMTR: 'Impacto y Transformación', ARCR: 'Reflexión Crítica' };
+        const vectorIconsSVG = {
+             COPE: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 6.9 8 11.7z"/></svg>',
+             PART: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+             DIIN: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7"/><path d="M17 12H7"/></svg>',
+             IMTR: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/><path d="m13 13-1-4-4 1 1 4 4-1z"/></svg>',
+             ARCR: '<svg class="vector-icon-svg-report" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>'
         };
-
-        // Poblar Preguntas (Misma lógica que antes)
-         vectors.forEach(vector => { /* ... código para añadir preguntas al form ... */
-             const vectorTitle = document.createElement('h3');
-             vectorTitle.innerHTML = `<span class="vector-icon">${vectorIconsSVG[vector]}</span>${vectorNames[vector]} (${vector})`; // Usar icono SVG aquí también si se desea
-             vectorTitle.style.color = 'var(--color-secondary)';
-             vectorTitle.style.marginTop = '2rem';
-             vectorTitle.style.borderBottom = '1px solid #eee';
-             vectorTitle.style.paddingBottom = '0.5rem';
-             vectorTitle.style.display = 'flex'; // Alinear icono y texto
-             vectorTitle.style.alignItems = 'center';
-             vectorTitle.style.gap = '0.5rem';
+        // Lógica para poblar preguntas (igual que antes, adaptada a 5 vectores)
+        vectors.forEach(vector => {
+            console.log("Procesando vector:", vector);
+            const vectorTitle = document.createElement('h3');
+            vectorTitle.innerHTML = `<span style="flex-shrink:0;">${vectorIconsSVG[vector].replace('vector-icon-svg-report', 'card-icon-svg')}</span>${vectorNames[vector]}`;
+            vectorTitle.style.color = 'var(--color-primary)'; vectorTitle.style.marginTop = '2rem'; vectorTitle.style.borderBottom = '1px solid #eee'; vectorTitle.style.paddingBottom = '0.5rem'; vectorTitle.style.display = 'flex'; vectorTitle.style.alignItems = 'center'; vectorTitle.style.gap = '0.5rem';
             questionsContainer.appendChild(vectorTitle);
-             // Resto del código para añadir radios (igual que antes)
-            questions.filter(q => q.vector === vector).forEach((q, index) => {
-                 const questionBlock = document.createElement('div');
-                 questionBlock.className = 'question-block';
-                 const questionIndex = questions.indexOf(q); // Índice global
-                 const questionText = document.createElement('p');
-                 questionText.textContent = q.text;
-                 questionBlock.appendChild(questionText);
-                 const radioGroup = document.createElement('div');
-                 radioGroup.className = 'radio-group';
-                 for (let i = 1; i <= 5; i++) {
-                     const label = document.createElement('label');
-                     const radio = document.createElement('input');
-                     radio.type = 'radio'; radio.name = `q${questionIndex}`; radio.value = i; radio.required = true;
-                     label.appendChild(radio);
-                     let labelText = '';
-                     switch(i) { case 1: labelText = '1 (Nada/Nunca)'; break; case 2: labelText = '2'; break; case 3: labelText = '3 (Regular)'; break; case 4: labelText = '4'; break; case 5: labelText = '5 (Totalmente/Siempre)'; break; }
-                     label.appendChild(document.createTextNode(labelText));
-                     radioGroup.appendChild(label);
-                 }
-                 questionBlock.appendChild(radioGroup);
-                 questionsContainer.appendChild(questionBlock);
-             });
-         });
+            questions.filter(q => q.vector === vector).forEach(q => {
+                const qBlock = document.createElement('div'); qBlock.className = 'question-block';
+                const qIndex = questions.indexOf(q);
+                qBlock.innerHTML = `<p>${q.text}</p>`;
+                const rGroup = document.createElement('div'); rGroup.className = 'radio-group';
+                for (let i = 1; i <= 5; i++) {
+                    let labelText = '';
+                    switch(i) { case 1: labelText = '1 (Bajo/Nunca)'; break; case 2: labelText = '2'; break; case 3: labelText = '3 (Medio)'; break; case 4: labelText = '4'; break; case 5: labelText = '5 (Alto/Siempre)'; break; }
+                    rGroup.innerHTML += `<label><input type="radio" name="q${qIndex}" value="${i}" required> ${labelText}</label>`;
+                }
+                qBlock.appendChild(rGroup);
+                questionsContainer.appendChild(qBlock);
+            });
+        });
 
+        // Lógica de formulario, API y reporte (igual que antes, adaptada a 5 vectores)
         const form = document.getElementById('ascForm');
         const reportSection = document.getElementById('reportSection');
         const feedbackContainer = document.getElementById('feedbackContainer');
         const reportTitle = document.getElementById('reportTitle');
-        const projectNameInput = document.getElementById('projectName');
-        const projectDescriptionInput = document.getElementById('projectDescription');
         const submitButton = document.getElementById('submitButton');
+        const submitSpinner = document.getElementById('submitSpinner');
         const loadingIndicator = document.getElementById('loadingIndicator');
         const errorIndicator = document.getElementById('errorIndicator');
-        const chartCanvas = document.getElementById('radarChart');
-        const ctx = chartCanvas.getContext('2d');
+        const downloadReportBtn = document.getElementById('downloadReportBtn');
+        const ctx = document.getElementById('radarChart').getContext('2d');
         let radarChartInstance = null;
-
-        // Event Listener (igual que antes, llama a la API)
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
-            submitButton.disabled = true;
-            loadingIndicator.style.display = 'block';
-            errorIndicator.style.display = 'none';
-            reportSection.style.display = 'none';
-            feedbackContainer.innerHTML = '<p>Generando análisis...</p>';
-
-            const projectName = projectNameInput.value;
-            const projectDescription = projectDescriptionInput.value;
-            const scores = { DISO: [], INSA: [], REPO: [], APRA: [], COPA: [], COAC: [] };
-            const responses = {};
+            submitButton.disabled = true; submitButton.classList.add('loading'); submitSpinner.style.display = 'inline-block'; loadingIndicator.style.display = 'block'; errorIndicator.style.display = 'none'; reportSection.style.display = 'none';
+            const projectName = document.getElementById('projectName').value;
+            const projectDescription = document.getElementById('projectDescription').value;
+            const scores = { COPE: [], PART: [], DIIN: [], IMTR: [], ARCR: [] };
             let allAnswered = true;
-
             questions.forEach((q, index) => {
-                const selectedRadio = document.querySelector(`input[name="q${index}"]:checked`);
-                if (selectedRadio) {
-                    const score = parseInt(selectedRadio.value);
-                    scores[q.vector].push(score);
-                    responses[`q${index}`] = score;
-                } else { allAnswered = false; }
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selected) { scores[q.vector].push(parseInt(selected.value)); } else { allAnswered = false; }
             });
-
-             if (!allAnswered) { showError("Por favor, responde todas las preguntas."); return; }
-
+            if (!allAnswered) { showError("Por favor, responde todas las preguntas."); return; }
             const averageScores = {};
-            vectors.forEach(vector => {
-                const sum = scores[vector].reduce((acc, val) => acc + val, 0);
-                averageScores[vector] = parseFloat((sum / scores[vector].length).toFixed(1));
+            vectors.forEach(v => { averageScores[v] = parseFloat((scores[v].reduce((a, b) => a + b, 0) / scores[v].length).toFixed(1)); });
+            const apiPayload = { projectName, projectDescription, scores: averageScores };
+            try {
+                const response = await fetch('/api/diagnose', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(apiPayload) });
+                if (!response.ok) { let eMsg = `Error: ${response.status}`; try { const eData = await response.json(); eMsg = eData.error || eMsg; } catch (e) {} throw new Error(eMsg); }
+                const result = await response.json();
+                displayReport(projectName, averageScores, result.diagnosisText || "Análisis no disponible.");
+            } catch (error) { console.error("Error API:", error); showError(`Error al generar diagnóstico: ${error.message}.`);
+            } finally { loadingIndicator.style.display = 'none'; submitSpinner.style.display = 'none'; submitButton.disabled = false; submitButton.classList.remove('loading'); }
+        });
+        function displayReport(name, scoresData, feedbackText) {
+            reportSection.style.display = 'block'; reportTitle.textContent = `Reporte de Diagnóstico ASC para: ${name}`;
+
+            console.log("=== PROCESANDO REPORTE ===");
+
+            // Guardar las puntuaciones en localStorage para usar en PDF
+            Object.keys(scoresData).forEach(vector => {
+                localStorage.setItem(`score_${vector}`, scoresData[vector].toString());
+            });
+            // Procesar títulos principales de Gemini primero - más robusto
+            let processedFeedback = feedbackText.replace(/^##\s+(.+)(?:\r?\n|$)/gm, '<h2>$1</h2>');
+            processedFeedback = processedFeedback.replace(/^###\s+(.+)(?:\r?\n|$)/gm, (match, title) => {
+                let vectorKey = Object.keys(vectorNames).find(key => title.includes(vectorNames[key]) || title.includes(`(${key})`));
+                if (vectorKey) {
+                    let score = scoresData[vectorKey] || 'X.X';
+                    let expandedIcon = vectorIconsSVG[vectorKey].replace('vector-icon-svg-report', 'principle-icon');
+                    let className = `principle-title-${vectorKey.toLowerCase()}`;
+                    let scoreBadge = `<span class="score-badge">${score}/5</span>`;
+                    return `<h3 class="${className}">${expandedIcon}<span>${vectorNames[vectorKey]}</span>${scoreBadge}</h3>`;
+                }
+                return `<h3>${title.trim()}</h3>`;
+            });
+            processedFeedback = processedFeedback.replace(/^####\s+(.+)(?:\r?\n|$)/gm, '<h4>$1</h4>');
+
+            // Procesar secciones diagnóstico y recomendaciones con prioridad específica
+            // Primero asegurar que "Diagnóstico General" se mantenga como H2
+            processedFeedback = processedFeedback.replace(/\*\*Diagnóstico General\*\*/gi, '<h2 class="diagnostico-general">Diagnóstico General</h2>');
+            processedFeedback = processedFeedback.replace(/\*\*Diagnóstico Específico\*\*/gi, '<h4>Diagnóstico Específico</h4>');
+            processedFeedback = processedFeedback.replace(/\*\*Recomendaciones Accionables\*\*/gi, '<h4 class="recomendaciones-accionables">Recomendaciones Accionables</h4>');
+
+            // Agregar una nota explicativa después del título principal
+            processedFeedback = processedFeedback.replace(/(<h2 class="diagnostico-general">Diagnóstico General<\/h2>)/g, '$1<p class="diagnostico-general-note">Análisis integral del perfil ASC del proyecto basado en su descripción y evaluación de los 5 principios</p>');
+
+            // Procesar otras secciones genéricas en negrita que no sean las específicas ya procesadas
+            processedFeedback = processedFeedback.replace(/\*\*([A-Z][a-z].*?)\*\*/g, match => {
+                const text = match.replace(/\*\*/g, '').trim();
+                // Solo procesar si no está ya convertido y no es un principio ya procesado
+                if (!text.includes('<h2') && !text.includes('<h4') && !text.includes('<h3') &&
+                    !Object.values(vectorNames).some(name => text.includes(name))) {
+                    if (text.includes('Diagnóstico') && !text.includes('Diagnóstico General')) {
+                        return `<h4>${text}</h4>`;
+                    }
+                    if (text.includes('Recomendaciones') && !text.includes('Recomendaciones Accionables')) {
+                        return `<h4>${text}</h4>`;
+                    }
+                    // Solo convertir si realmente es un título (mayúscula al inicio)
+                    if (text.length > 5 && /^[A-Z]/.test(text)) {
+                        return `<h3>${text}</h3>`;
+                    }
+                }
+                return match; // Dejar intacto si ya está convertido
             });
 
-            const apiPayload = {
-                projectName: projectName, projectDescription: projectDescription, scores: averageScores,
-                // Podrías incluir 'responses' si el backend lo necesita para análisis más detallado
-                // responses: responses
-             };
+            // Procesar formatos markdown estándar como fallback
+            processedFeedback = processedFeedback.replace(/## DIAGNÓSTICO GENERAL/g, '<h2 class="diagnostico-general">🔍 DIAGNÓSTICO GENERAL</h2>');
+            processedFeedback = processedFeedback.replace(/### DIAGNÓSTICO GENERAL/g, '<h2 class="diagnostico-general">🔍 DIAGNÓSTICO GENERAL</h2>');
 
+            // Procesar listas con guiones, asteriscos o puntos - más flexible
+            processedFeedback = processedFeedback.replace(/^[\s]*[-*+]\s+(.*?)(?:\r?\n|$)/gm, '<li>$1</li>');
+            processedFeedback = processedFeedback.replace(/^[\s]*\d+\.\s+(.*?)(?:\r?\n|$)/gm, '<li>$1</li>');
+
+            // Procesar negritas que no sean títulos
+            processedFeedback = processedFeedback.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            // Reemplazar saltos de línea con breaks
+            processedFeedback = processedFeedback.replace(/\n/g, '<br>');
+
+            // Mejorar el wrapping de listas - convertir grupos consecutivos de li en ul
+            processedFeedback = processedFeedback.replace(/(<li>.*?<\/li><br>\s*)+(?=<br>|<\/|$)/g, (match) => '<ul>' + match + '</ul>');
+            // Limpiar breaks extra en listas
+            processedFeedback = processedFeedback.replace(/(<\/ul><br>)+/g, '</ul>');
+
+            // Procesar párrafos - dividir el contenido en párrafos cuando haya multiples líneas en blanco
+            processedFeedback = processedFeedback.replace(/(?:<br><\/item>\s*)+/g, '</p><p>');
+            processedFeedback = processedFeedback.replace(/^(<br>*)/, '<p>');
+            processedFeedback = processedFeedback.replace(/(<br>*)$/, '</p>');
+
+            // Debug: Mostrar el contenido procesado
+            console.log("Contenido procesado final:", processedFeedback);
+
+            feedbackContainer.innerHTML = processedFeedback;
+            const chartData = { labels: vectors.map(v => vectorNames[v]), datasets: [{ label: `Diagnóstico ASC`, data: vectors.map(v => scoresData[v]), backgroundColor: 'rgba(12, 74, 110, 0.2)', borderColor: 'rgba(12, 74, 110, 1)', borderWidth: 2, pointBackgroundColor: 'rgba(12, 74, 110, 1)', pointBorderColor: '#fff' }] };
+            const chartOptions = { scales: { r: { angleLines: { color: 'rgba(0, 0, 0, 0.1)' }, suggestedMin: 0, suggestedMax: 5, grid: { color: 'rgba(0, 0, 0, 0.1)' }, pointLabels: { font: { size: 12 }, color: '#333' }, ticks: { stepSize: 1, backdropColor: 'rgba(255, 255, 255, 0.75)' } } }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.parsed.r.toFixed(1)} / 5` } } } };
+            if (radarChartInstance) radarChartInstance.destroy();
+            radarChartInstance = new Chart(ctx, { type: 'radar', data: chartData, options: chartOptions });
+            reportSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        function showError(message) { errorIndicator.textContent = message; errorIndicator.style.display = 'block'; submitSpinner.style.display = 'none'; loadingIndicator.style.display = 'none'; submitButton.disabled = false; submitButton.classList.remove('loading'); }
+
+        // Función para descargar el reporte como archivo HTML autossuficiente
+        function downloadReportAsHTML() {
             try {
-                // *** ¡IMPORTANTE! CAMBIA ESTA URL POR LA DE TU BACKEND REAL ***
-                const apiUrl = 'http://localhost:3001/api/diagnose'; // Use absolute URL for local testing
-                // ***************************************************************
+                const reportTitle = document.getElementById('reportTitle').textContent;
+                const projectName = reportTitle.replace("Reporte de Diagnóstico ASC para: ", "");
+                const feedbackContainer = document.getElementById('feedbackContainer');
 
-                const response = await fetch(apiUrl, {
-                     method: 'POST',
-                     headers: { 'Content-Type': 'application/json' },
-                     body: JSON.stringify(apiPayload),
-                 });
+                // Obtener vectores y puntajes para incluir en HTML
+                const vectors = ['COPE', 'PART', 'DIIN', 'IMTR', 'ARCR'];
+                const vectorNames = {
+                    'COPE': 'Contexto y Pertinencia',
+                    'PART': 'Participación Activa',
+                    'DIIN': 'Diálogo de Saberes',
+                    'IMTR': 'Impacto y Transformación',
+                    'ARCR': 'Reflexión Crítica'
+                };
 
-                 if (!response.ok) {
-                     let errorMsg = `Error del servidor: ${response.status}`;
-                     try { const errorData = await response.json(); errorMsg = errorData.error || errorMsg; } catch(e) {}
-                     throw new Error(errorMsg);
-                 }
-                 const result = await response.json();
-                 displayReport(projectName, averageScores, result.diagnosisText || "Análisis no disponible.");
+                // Crear contenido HTML con estilos inline
+                const fecha = new Date().toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
 
-             } catch (error) {
-                console.error("Error al llamar a la API:", error);
-                showError(`Error al generar el diagnóstico: ${error.message}. Verifica la conexión con el servicio backend.`);
-            } finally {
-                loadingIndicator.style.display = 'none';
-                submitButton.disabled = false;
+                let htmlContent = `
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte ASC - ${projectName}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            background-color: #0C4A6E;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .project-info {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .scores-table {
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+        .scores-table table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .scores-table th,
+        .scores-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .scores-table th {
+            background-color: #0C4A6E;
+            color: white;
+            font-weight: 600;
+        }
+        .feedback-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .diagnostico-general h2 {
+            background: linear-gradient(135deg, #0C4A6E, #0369A1);
+            color: white;
+            border-radius: 12px;
+            font-size: 1.6rem;
+            font-weight: 800;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .principle-title-cope {
+            color: #059669;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 2rem 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .principle-title-part {
+            color: #7c3aed;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 2rem 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .principle-title-diin {
+            color: #dc2626;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 2rem 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .principle-title-imtr {
+            color: #ea580c;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 2rem 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .principle-title-arcr {
+            color: #0891b2;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 2rem 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .feedback-section h4 {
+            color: #e11d48;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 1.5rem 0 1rem 0;
+        }
+        .feedback-section p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+        .feedback-section strong {
+            color: #1e293b;
+            font-weight: 600;
+        }
+        .feedback-section ul {
+            padding-left: 1.5rem;
+            margin: 1rem 0;
+        }
+        .feedback-section li {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #64748b;
+        }
+        .score-badge {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+        }
+        .footer img {
+            max-width: 120px;
+            margin-bottom: 10px;
+        }
+        @media print {
+            body {
+                background-color: white;
             }
-        });
+            .feedback-section {
+                box-shadow: none;
+                border: 1px solid #e2e8f0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔍 ASC Pentágono Diagnóstico</h1>
+        <p>Reporte de Análisis Completo</p>
+    </div>
 
-        // Función DisplayReport (Adaptada para incluir iconos en títulos h3)
-         function displayReport(projectName, scoresData, feedbackText) {
-             reportSection.style.display = 'block';
-             reportTitle.textContent = `Reporte de Diagnóstico ASC para: ${projectName}`;
+    <div class="project-info">
+        <p><strong>Proyecto/Organización:</strong> ${projectName}</p>
+        <p><strong>Fecha de Generación:</strong> ${fecha}</p>
+        <p><strong>Análisis Realizado por:</strong> IA Gemini (Google)</p>
+    </div>
 
-             // Mostrar Feedback de la IA (puede necesitar parseo de Markdown si el backend lo envía)
-             feedbackContainer.innerHTML = ''; // Limpiar
-             const feedbackContent = document.createElement('div');
+    <div class="scores-table">
+        <h3 style="margin-bottom: 15px; color: #0C4A6E;">📊 Calificación General por Principios ASC</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Principio ASC</th>
+                    <th>Calificación</th>
+                    <th>Interpretación</th>
+                </tr>
+            </thead>
+            <tbody>`;
 
-             // --- Intento Básico de Parseo Markdown Simple (Títulos y Listas) ---
-             // Reemplazar ### Título por <h3> con icono
-             let processedFeedback = feedbackText.replace(/### (.*?)\n/g, (match, title) => {
-                 let vectorKey = null;
-                 // Intentar encontrar el vector por nombre o acrónimo en el título
-                 for(const key in vectorNames) {
-                     if (title.includes(vectorNames[key]) || title.includes(`(${key})`)) {
-                         vectorKey = key;
-                         break;
-                     }
-                 }
-                 const iconHtml = vectorKey ? vectorIconsSVG[vectorKey] : ''; // Añadir icono si se encontró
-                 return `<h3>${iconHtml}${title.trim()}</h3>`;
-             });
-             // Reemplazar #### Subtítulo por <h4>
-             processedFeedback = processedFeedback.replace(/#### (.*?)\n/g, '<h4>$1</h4>');
-              // Reemplazar **texto** por <strong>texto</strong>
-             processedFeedback = processedFeedback.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-             // Reemplazar * item (o - item) por <li>item</li> y envolver en <ul>
-             processedFeedback = processedFeedback.replace(/^\s*[-*]\s+(.*)/gm, '<li>$1</li>');
-             processedFeedback = processedFeedback.replace(/(\n?<li>.*?<\/li>\n?)+/g, '<ul>$&</ul>\n'); // Envolver grupos de <li> en <ul>
-             // Reemplazar saltos de línea por <br> excepto dentro de listas
-             processedFeedback = processedFeedback.replace(/(?<!<\/li>)\n/g, '<br>');
+                // Agregar filas de tabla con calificaciones
+                vectors.forEach(vector => {
+                    const score = parseFloat(localStorage.getItem(`score_${vector}`)) || 0;
+                    const scoreText =
+                        score >= 4.5 ? 'Excelente' :
+                        score >= 3.5 ? 'Muy Bueno' :
+                        score >= 2.5 ? 'Regular' :
+                        score >= 1.5 ? 'Necesita Mejorar' :
+                        'Crítico';
+                    htmlContent += `
+                <tr>
+                    <td>${vectorNames[vector]}</td>
+                    <td><strong>${score}/5</strong></td>
+                    <td>${scoreText}</td>
+                </tr>`;
+                });
 
-             feedbackContent.innerHTML = processedFeedback;
-             feedbackContainer.appendChild(feedbackContent);
-             // --- Fin Parseo Básico ---
+                htmlContent += `
+            </tbody>
+        </table>
+    </div>
 
-             // Generar Gráfico Radar (Misma lógica que antes)
-             const chartData = { labels: vectors.map(v => `${vectorNames[v]}\n(${v})`), datasets: [{ label: `Diagnóstico ASC`, data: vectors.map(v => scoresData[v]), backgroundColor: 'rgba(79, 70, 229, 0.2)', borderColor: 'rgba(79, 70, 229, 1)', borderWidth: 2, pointBackgroundColor: 'rgba(79, 70, 229, 1)', pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: 'rgba(79, 70, 229, 1)' }] };
-             const chartOptions = { scales: { r: { angleLines: { display: true, color: 'rgba(0, 0, 0, 0.1)' }, suggestedMin: 0, suggestedMax: 5, grid: { color: 'rgba(0, 0, 0, 0.1)' }, pointLabels: { font: { size: 10 }, color: '#333', }, ticks: { stepSize: 1, backdropColor: 'rgba(255, 255, 255, 0.75)', color: '#555' } } }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(context) { return `${context.parsed.r.toFixed(1)} / 5`; } } } }, maintainAspectRatio: true, responsive: true };
-             if(radarChartInstance) { radarChartInstance.destroy(); }
-             radarChartInstance = new Chart(ctx, { type: 'radar', data: chartData, options: chartOptions });
+    <div class="feedback-section">
+        <h3 style="margin-bottom: 20px; color: #0C4A6E;">📈 Análisis Detallado de la IA</h3>`;
 
-             reportSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-         }
+                // Copiar todo el contenido del feedback container
+                const feedbackContent = feedbackContainer.innerHTML;
+                htmlContent += feedbackContent;
 
-        // Función ShowError (igual que antes)
-         function showError(message) { errorIndicator.textContent = message; errorIndicator.style.display = 'block'; loadingIndicator.style.display = 'none'; submitButton.disabled = false; }
+                htmlContent += `
+    </div>
 
+    <div class="footer">
+        <img src="https://ia601206.us.archive.org/32/items/ccfjc-logo-color/CCFJC%20Logo%20Color%20.png" alt="CCFJC Logo">
+        <p>Generado por el ASC Pentágono Diagnóstico</p>
+        <p>Centro de Ciencia Francisco José de Caldas - Makerspace</p>
+        <p>Política Pública de Minciencias - Apropiación Social del Conocimiento</p>
+    </div>
+</body>
+</html>`;
+
+                // Crear y descargar el archivo
+                const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `reporte-asc-${projectName.replace(/[^a-zA-Z0-9]/g, '_')}-${new Date().toISOString().split('T')[0]}.html`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                // Limpiar URL de objeto
+                URL.revokeObjectURL(link.href);
+
+            } catch (error) {
+                console.error('Error al generar el HTML:', error);
+                alert('Error al descargar el reporte. Inténtalo nuevamente.');
+            }
+        }
+
+        // Event listener para el botón de descarga
+        downloadReportBtn.addEventListener('click', downloadReportAsHTML);
     </script>
-
 </body>
 </html>

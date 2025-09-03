@@ -1,139 +1,300 @@
-# ASC Diagnóstica Pro 🚀
+# 🔍 ASC Pentágono Diagnóstico
 
-Herramienta de Diagnóstico de Apropiación Social del Conocimiento (ASC) Potenciada por IA
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Vercel](https://img.shields.io/badge/Deploy-Vercel-black)](https://vercel.com)
+[![Node.js Version](https://img.shields.io/badge/Node.js-18+-green)](https://nodejs.org/)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) <!-- Opcional: Añadir una licencia -->
+Herramienta interactiva para diagnosticar y fortalecer estrategias de **Apropiación Social del Conocimiento (ASC)** basada en la Política Pública del Ministerio de Ciencia, Tecnología e Innovación de Colombia.
 
-## Descripción
+## 🌟 Descripción
 
-**ASC Diagnóstica Pro** es una aplicación web diseñada para ayudar a proyectos, organizaciones e investigadores a **evaluar y diagnosticar los niveles de Apropiación Social del Conocimiento (ASC)** dentro de sus iniciativas. Inspirada en la estructura del **Modelo HIP (Hexágono de la Innovación Pública)**, esta herramienta utiliza un formulario de autodiagnóstico de 36 preguntas y aprovecha la potencia de la **API de Google Gemini** para generar análisis detallados, visualizaciones (gráfico de radar) y recomendaciones personalizadas y accionables.
+**ASC Pentágono Diagnóstico** es una aplicación web que evalúa proyectos de ciencia, tecnología e innovación según los **5 Principios Fundamentales de la Política Pública de ASC de Colombia**:
 
-El objetivo es proporcionar una visión clara de las fortalezas y áreas de mejora de un proyecto en cuanto a su capacidad para conectar con la sociedad, integrar saberes, responder oportunamente, generar aplicaciones prácticas, fomentar la co-creación y utilizar la tecnología de forma accesible, promoviendo así un mayor impacto social.
+- **COPE** - Contexto y Pertinencia
+- **PART** - Participación Activa
+- **DIIN** - Diálogo de Saberes
+- **IMTR** - Impacto y Transformación
+- **ARCR** - Reflexión Crítica
 
-## Conceptos Clave: Los 6 Vectores de ASC
+La herramienta genera **diagnósticos personalizados** usando **inteligencia artificial** (Google Gemini) y produce **reportes HTML autossuficientes** que incluyen:
+- Análisis detallado por principio
+- Plan de mejoras con recomendaciones específicas
+- Medición de indicadores
+- Interpretación de resultados
 
-La herramienta evalúa el proyecto a través de 6 vectores adaptados del Modelo HIP:
+## Los 5 Principios del Pentágono de la ASC
 
-1.  **DISO (Diálogo Social):** Apertura a la interacción, participación y diálogo bidireccional con actores sociales.
-2.  **INSA (Integración de Saberes):** Diálogo e integración equitativa de conocimientos diversos (científicos, locales, etc.).
-3.  **REPO (Respuesta Oportuna):** Capacidad de traducir conocimiento en acciones relevantes de forma ágil y adaptativa.
-4.  **APRA (Aplicación Práctica):** Enfoque en resultados tangibles, prototipos y soluciones útiles para la comunidad.
-5.  **COPA (Co-creación Participativa):** Fomento de la colaboración profunda, el co-diseño y la construcción de comunidad.
-6.  **COAC (Conectividad Accesible):** Uso estratégico de la tecnología para facilitar el acceso, intercambio y participación.
+El diagnóstico se estructura en torno a los siguientes 5 principios, que ahora son los vectores de nuestra herramienta:
 
-## ✨ Características Principales
+1.  **Contexto y Pertinencia (COPE):** Capacidad del proyecto para adaptarse a las realidades locales, necesidades y características culturales del territorio.
+2.  **Participación Activa (PART):** Nivel y calidad de la intervención ciudadana en la toma de decisiones, colaboración y gobernanza del proyecto.
+3.  **Diálogo e Integración de Saberes (DIIN):** Creación de espacios equitativos para intercambiar y construir conocimiento entre saberes científicos, locales y tradicionales.
+4.  **Impacto y Transformación (IMTR):** Capacidad para generar cambios y resultados concretos como producto de la participación y el diálogo colaborativo.
+5.  **Aprendizaje y Reflexión Crítica (ARCR):** Procesos de análisis continuo, evaluación y sistematización de experiencias para la mejora constante.
 
-*   **Formulario de Autodiagnóstico:** 36 preguntas basadas en los 6 vectores ASC, con escala Likert (1-5).
-*   **Contextualización del Proyecto:** Campo de descripción para proporcionar contexto a la IA.
-*   **Visualización de Datos:** Gráfico de radar interactivo que muestra las puntuaciones promedio por vector.
-*   **Análisis y Recomendaciones por IA:**
-    *   Integración con la API de Google Gemini (modelo `gemini-1.5-pro` o similar).
-    *   Diagnóstico general del perfil ASC del proyecto.
-    *   Análisis detallado y recomendaciones concretas para cada uno de los 6 vectores, personalizadas según la descripción y puntuaciones del proyecto.
-*   **Interfaz Moderna:** Diseño limpio y responsivo creado con HTML, CSS moderno y JavaScript vanilla.
-*   **Backend Proxy Seguro:** Un servidor Node.js/Express actúa como intermediario para proteger la clave API de Gemini.
+## ✨ Características
 
-## 🛠️ Stack Tecnológico
+*   **Alineación con Política Pública:** El modelo y las preguntas están basados en los principios y líneas estratégicas de Minciencias.
+*   **Formulario de 25 Preguntas:** Cuestionario conciso y enfocado en los 5 principios clave de la ASC.
+*   **Visualización Pentagonal:** Un gráfico de radar de 5 ejes para una visualización clara del perfil de ASC del proyecto.
+*   **Análisis por IA con Gemini:**
+    *   Generación de un diagnóstico general del proyecto.
+    *   Análisis detallado y recomendaciones prácticas para cada uno de los 5 principios, contextualizadas con la descripción del proyecto.
+*   **Interfaz Limpia y Moderna:** Frontend responsivo en un único archivo HTML para facilitar el despliegue.
+*   **Arquitectura Segura:** Uso de un backend proxy en Node.js para proteger la clave API de Gemini.
 
-*   **Frontend:**
-    *   HTML5
-    *   CSS3 (Estilos modernos embebidos, inspirados en Tailwind)
-    *   JavaScript (Vanilla JS)
-    *   [Chart.js](https://www.chartjs.org/) (Para el gráfico de radar)
-*   **Backend (Proxy API):**
-    *   Node.js
-    *   Express.js
-    *   [@google/generative-ai](https://www.npmjs.com/package/@google/generative-ai) (SDK oficial de Google AI)
-    *   [dotenv](https://www.npmjs.com/package/dotenv) (Para manejo seguro de API Keys)
-    *   [cors](https://www.npmjs.com/package/cors) (Para habilitar peticiones desde el frontend)
-*   **IA:**
-    *   Google Gemini API (Modelo `gemini-1.5-pro-preview-0514` o más reciente)
+## 💻 Stack Tecnológico
 
-## ⚙️ Cómo Funciona
+### Frontend
+- **HTML5** - Estructura y semántica
+- **CSS3 Moderno** - Estilos responsive, flexbox, gradientes, animaciones
+- **Vanilla JavaScript ES6+** - Lógica del cliente sin frameworks
+- **Chart.js** - Gráficos dinámicos y visualizaciones
+- **Fontespecífica CSS-in-JS** - Tipografía web moderna
 
-1.  **Frontend (`index.html`):** El usuario interactúa con la interfaz, rellena el nombre del proyecto, la descripción y responde las 36 preguntas del formulario.
-2.  **Envío de Datos:** Al enviar el formulario, el JavaScript del frontend recopila los datos (nombre, descripción, puntuaciones promedio por vector), valida que todo esté completo y envía una petición `POST` al endpoint del backend (`/api/diagnose`).
-3.  **Backend Proxy (`server.js`):**
-    *   El servidor Express recibe la petición.
-    *   Lee de forma segura la clave API de Gemini desde las variables de entorno (`.env`).
-    *   Construye un *prompt* detallado para Gemini, incluyendo el *system prompt* (rol de experto en ASC), la descripción del proyecto y las puntuaciones.
-    *   Llama a la API de Google Gemini utilizando el SDK `@google/generative-ai`.
-    *   Recibe la respuesta generada por la IA (el texto del diagnóstico y recomendaciones).
-    *   Envía esta respuesta de vuelta al frontend en formato JSON.
-    *   **Importante:** Este paso es crucial para la seguridad, ya que la clave API **nunca** se expone en el código del navegador.
-4.  **Visualización del Reporte:** El JavaScript del frontend recibe la respuesta del backend, muestra el gráfico de radar con los puntajes calculados y presenta el texto del diagnóstico y las recomendaciones generadas por la IA en la sección de reporte.
+### Backend (Serverless)
+- **Vercel Functions** - Runtime de Node.js
+- **Node.js 18+** - Motor JavaScript
+- **@google/generative-ai** - SDK oficial de Gemini
+- **dotenv** - Gestión segura de variables de entorno
 
-## 🚀 Getting Started (Cómo Empezar)
+### Servicios Externos
+- **Google Gemini API** - Modelo `gemini-2.0-flash-lite`
+- **Vercel Platform** - Despliegue, escalado y CDN
+- **CDN de jsDelivr** - Librerías externas optimizadas
 
-Sigue estos pasos para configurar y ejecutar el proyecto localmente.
+## 🔒 Consideraciones de Seguridad
 
-### Prerrequisitos
+### Variables Sensibles
+- ✅ API Keys manejadas solo en servidor
+- ✅ Variables de entorno en archivos `.env`
+- ✅ `.gitignore` configurado para archivos sensibles
+- ✅ Headers CORS restrictivos configurados
+- ✅ Content Security Policy activo
 
-*   [Node.js](https://nodejs.org/) (versión LTS recomendada) y npm (generalmente viene con Node.js)
-*   [Git](https://git-scm.com/) (para clonar el repositorio)
-*   Una **Clave API de Google Gemini**. Puedes obtenerla desde [Google AI Studio](https://aistudio.google.com/app/apikey).
+### Protección de Datos
+- ✅ No almacena datos de usuarios
+- ✅ Transmite solo información necesaria
+- ✅ Usa HTTPS/TLS obligatorio
+- ✅ Requests autenticados con API Keys
 
-### Instalación
+## 📊 Funcionalidades
 
-1.  **Clona el repositorio:**
-    ```bash
-    git clone https://github.com/TU_USUARIO/asc-diagnostica-pro.git # Reemplaza con la URL de tu repo
-    cd asc-diagnostica-pro
-    ```
-2.  **Instala las dependencias del backend:**
-    ```bash
-    npm install
-    ```
+- ✅ **Diagnóstico IA Completo** - Análisis profundo con contexto
+- ✅ **25 Preguntas Estructuradas** - Baseadas en línea de Minciencias
+- ✅ **Visualización Pentagonal** - Gráfico de radar interactivo
+- ✅ **Reportes HTML Autossuficientes** - Sin depender de conexión
+- ✅ **Colores por Principio** - Identificación visual inmediata
+- ✅ **Responsive Design** - Funciona en móvil y desktop
+- ✅ **Offline Capable** - Reportes pueden abrirse sin internet
+- ✅ **Impresión Optimizada** - Reportes listos para imprimir
 
-### Configuración
+## 🤝 Contribuciones y Desarrollo
 
-1.  **Crea el archivo `.env`:** En la raíz del proyecto (`asc-diagnostica-pro`), crea un archivo llamado `.env`.
-2.  **Añade tu Clave API:** Abre el archivo `.env` y añade la siguiente línea, reemplazando `TU_CLAVE_API_DE_GEMINI_AQUI` con tu clave real:
-    ```dotenv
-    GEMINI_API_KEY=TU_CLAVE_API_DE_GEMINI_AQUI
-    ```
-3.  **Asegura el `.env`:** Asegúrate de que tu archivo `.gitignore` (si no existe, créalo) incluya la línea `.env` para evitar subir tu clave API a Git.
-    ```gitignore
-    node_modules
-    .env
-    ```
+### Bienvenido a contribuir
+1. Fork el proyecto
+2. Crea una rama nueva (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit tus cambios (`git commit -am 'Agrega nueva funcionalidad'`)
+4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
+5. Abre un Pull Request
 
-### Ejecución de la Aplicación
+### Mejoras Planificadas
+- 🔄 **Accesibilidad:** Soporte completo para lectores de pantalla
+- 🔄 **Internacionalización:** Soporte para múltiples idiomas
+- 🔄 **Manifest PWA:** Aplicación web progresiva
+- 🔄 **Tests Automatizados:** Cobertura de código completa
 
-1.  **Inicia el Servidor Backend:**
-    *   Para desarrollo (con recarga automática si tienes `nodemon` instalado globalmente o como devDependency):
-        ```bash
-        npm run dev
-        ```
-    *   Para producción o sin `nodemon`:
-        ```bash
-        npm start
-        ```
-    El servidor debería iniciarse y mostrar un mensaje como: `Servidor backend escuchando en http://localhost:3001` (o el puerto que hayas configurado).
+## 🚀 Inicio Rápido
 
-2.  **Abre el Frontend:** Abre el archivo `index.html` directamente en tu navegador web. Puedes hacer doble clic en él desde tu explorador de archivos o usar extensiones como "Live Server" en VS Code.
+### Requisitos Previos
 
-3.  **¡Prueba la Herramienta!** Rellena el formulario, añade una descripción detallada de un proyecto (real o ficticio) y haz clic en "Generar Diagnóstico con IA".
+- ✅ Node.js 18+ (versión LTS)
+- ✅ Cuenta de Google (para API de Gemini)
+- ✅ Git (opcional, para control de versiones)
 
-## 📸 Screenshots (Opcional)
+### 🔑 1. Obtener API Key de Google Gemini
 
-*(Puedes añadir aquí capturas de pantalla de la interfaz, el formulario y el reporte generado)*
+**IMPORTANTE:** Necesitas una clave API gratuita de Google Gemini para que funcione la aplicación.
 
-*   *Ejemplo: Pantalla principal*
-*   *Ejemplo: Formulario de diagnóstico*
-*   *Ejemplo: Reporte con gráfico y análisis*
+1. Ve a [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Inicia sesión con tu cuenta Google
+3. Crear una nueva API Key
+4. Copia la clave (formato: `AIza...`)
 
-## 🤝 Contribuciones (Opcional)
+### 💻 2. Instalación Local
 
-Las contribuciones son bienvenidas. Si deseas mejorar la herramienta, por favor, abre un *issue* primero para discutir los cambios o crea un *pull request*.
+```bash
+# Clona el repositorio (reemplaza con tu URL de GitHub)
+git clone https://github.com/your-username/asc-pentagono-diagnostico.git
+cd asc-pentagono-diagnostico
 
-## 📄 Licencia (Opcional)
+# Instala dependencias
+npm install
 
-Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles (si lo creas).
+# Configura variables de entorno
+cp .env.example .env
+# Edita .env y agrega tu GEMINI_API_KEY real
+```
 
-## 🙏 Agradecimientos
+### 🔧 3. Configuración de Variables de Entorno
 
-*   Inspirado en el **Modelo HIP (Hexágono de la Innovación Pública)** desarrollado para la Cumbre Iberoamericana.
-*   Desarrollado en el **Makespace del Centro de Ciencia Francisco José de Caldas**.
+Crea un archivo `.env` con el siguiente contenido:
 
----
+```bash
+# API Key de Google Generative AI (Gemini)
+GEMINI_API_KEY=tu_clave_api_real_de_gemini_aqui
+
+# Configuración de desarrollo
+NODE_ENV=development
+PORT=3001
+```
+
+### ▶️ 4. Ejecutar en Desarrollo Local
+
+```bash
+# Para desarrollo local
+npm run dev
+
+# O para producción local
+npm start
+```
+
+Abre `http://localhost:3001` en tu navegador para usar la aplicación.
+
+## 🌐 Despliegue en Vercel
+
+### Opción A: Despliegue Automático (Recomendado)
+
+1. **Importa desde GitHub**:
+   - Ve a [Vercel Dashboard](https://vercel.com/dashboard)
+   - Haz clic "New Project"
+   - Conecta tu cuenta de GitHub
+   - Selecciona el repositorio `asc-pentagono-diagnostico`
+
+2. **Configura Variables de Entorno**:
+   - Ve a Settings → Environment Variables
+   - Agrega: `GEMINI_API_KEY` = tu_clave_API_de_Gemini
+   - Asegúrate que sea "Production" environment
+
+3. **Deploy**:
+   - Haz clic "Deploy"
+   - Espera a que termine el despliegue
+   - ¡Tu aplicación estará lista en una URL como `https://asc-diagnostico.vercel.app`
+
+### Opción B: Usando CLI de Vercel
+
+```bash
+# Instala Vercel CLI
+npm install -g vercel
+
+# Deploy
+vercel --prod
+
+# Configura variables de entorno en producción
+vercel env add GEMINI_API_KEY
+```
+
+## 📁 Estructura del Proyecto
+
+```
+asc-diagnostica-pro/
+├── 📄 index.html                 # Aplicación principal (frontend + gráficos)
+├── 📄 api/diagnose.js            # API serverless (Vercel Function)
+├── 📄 vercel.json               # Configuración de Vercel
+├── 📄 package.json              # Dependencias y scripts
+├── 📄 .env                      # Variables de entorno (desarrollo)
+├── 📄 .env.example              # Template de variables
+├── 📄 .gitignore               # Archivos ignorados por Git
+└── 📄 README.md                 # Esta documentación
+```
+
+## 🔧 Scripts Disponibles
+
+### Despliegue
+```bash
+npm run deploy        # Desplegar a producción en Vercel
+npm run preview       # Crear preview deployment
+npm run build         # No requiere build (static site)
+```
+
+### Desarrollo
+```bash
+npm run dev           # Desarrollo con Vercel (hot reload)
+npm start             # ejecutar servidor local
+
+### Verificación
+npm test              # Ejecutar tests (placeholder)
+```
+
+## 🎯 Uso de la Aplicación
+
+1. **Accede a la aplicación**
+2. **Completa el formulario**:
+   - Nombre del proyecto/organización
+   - Descripción detallada del proyecto
+   - Responde las 25 preguntas (5 por principio ASC)
+3. **Genera el diagnóstico**
+4. **Revisa el análisis IA**
+5. **Descarga el reporte HTML**
+
+## ⚙️ Variables de Entorno Requeridas
+
+### Producción (Vercel)
+- `GEMINI_API_KEY`: Tu clave API de Google Gemini
+
+### Desarrollo Local
+- `GEMINI_API_KEY`: Tu clave API de Google Gemini
+- `NODE_ENV`: `development`
+- `PORT`: `3001` (opcional)
+
+## 📋 Licencia y Distribución
+
+Este proyecto está bajo la **Licencia MIT**. Esto significa que:
+
+- ✅ **Uso Comercial:** Puede usarse en productos comerciales
+- ✅ **Modificación:** Puede modificarse libremente
+- ✅ **Distribución:** Puede distribuirse libremente
+- ✅ **Uso Privado:** Puede usarse en proyectos privados
+- ⚠️ **Atribución:** Mantenga el reconocimiento original
+
+Cita recomendada:
+```
+ASC Pentágono Diagnóstico - Centro de Ciencia Francisco José de Caldas
+Licencia MIT - 2024
+https://github.com/tu-usuario/asc-pentagono-diagnostico
+```
+
+## 📞 Soporte y Contacto
+
+### ¿Necesitas Ayuda?
+
+- 🐛 **Reportar problemas:** [Issues en GitHub](https://github.com/tu-usuario/asc-pentagono-diagnostico/issues)
+- 💡 **Sugerencias:** Crea un Issue con la etiqueta `enhancement`
+- 📧 **Consultas técnicas:** Debes registrarte y subir tu proyecto a GitHub primero
+
+### Centro de Ciencia Francisco José de Caldas
+
+- 📍 **Ubicación:** Bogotá, Colombia
+- 🌐 **Sitio web:** [ccfjc.gov.co](https://ccfjc.gov.co) (sitio ejemplo)
+- 🧪 **Makespace:** Innovación y tecnología aplicada
+- 🎯 **Enfoque:** Ciencia ciudadana y apropiación social del conocimiento
+
+## 🙏 Agradecimientos Especiales
+
+### Ministerio de Ciencia, Tecnología e Innovación de Colombia
+Por la **Política Pública de Apropiación Social del Conocimiento** que inspira y guía esta herramienta.
+
+### Comunidad asciigrant
+- 🤝 Diseño accesible y participación ciudadana
+- 🎨 Experiencia de usuario centrada en ciudadanos
+- 💡 Innovación en políticas públicas
+
+### Desarrollado en el Makespace
+**Centro de Ciencia Francisco José de Caldas**
+*Talleres de innovación tecnológica* | *Proyectos de ciencia abierta* | *Desarrollo comunitario*
+
+### Tecnologías y Servicios
+- 🚀 **Vercel:** Despliegue, escalado y CDN
+- 🤖 **Google Gemini:** Inteligencia artificial avanzada
+- 🎨 **Chart.js:** Visualización de datos profesional
+- 🛡️ **Seguridad:** Mejores prácticas de protección de datos
