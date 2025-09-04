@@ -5,10 +5,14 @@
       "runtime": "@vercel/node@18"
     }
   },
-  "remotes": [
+  "routes": [
     {
-      "from": "/(.*)",
-      "to": "/index.html"
+      "src": "/api/diagnose",
+      "dest": "/api/diagnose.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
